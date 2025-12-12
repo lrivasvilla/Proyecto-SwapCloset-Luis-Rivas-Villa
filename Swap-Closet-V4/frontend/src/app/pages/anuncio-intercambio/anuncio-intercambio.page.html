@@ -1,0 +1,39 @@
+<ion-header></ion-header>
+
+<ion-content>
+
+  <ion-row>
+    <ion-col class="centro" size="2">
+      <ion-button fill="clear" (click)="volver()">
+        <ion-icon class="icono" size="large" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-col>
+
+    <ion-col class="izquierda" size="7">
+      <h2><b>Detalle del anuncio</b></h2>
+    </ion-col>
+
+    <ion-col size="3" class="centro-opciones">
+      @if(usuario()?.id === idUsuarioLogueado) {
+        <ion-button fill="clear" (click)="mostrarOpciones()">
+          <ion-icon class="icono" size="large" name="ellipsis-vertical-outline"></ion-icon>
+        </ion-button>
+      }
+    </ion-col>
+  </ion-row>
+
+  <app-anuncio-componente
+    [producto]="producto()"
+    [usuario]="usuario()"
+    [estilos]="estilos()"
+    [primeraImagen]="getPrimeraImagen()"
+    [idUsuarioLogueado]="idUsuarioLogueado"
+    [modoEdicion]="modoEdicion()"
+    (guardarHijo)="guardarCambios($event)"
+  ></app-anuncio-componente>
+
+</ion-content>
+
+<ion-footer [routerLink]="['/chat']">
+  <app-btn-contactar></app-btn-contactar>
+</ion-footer>

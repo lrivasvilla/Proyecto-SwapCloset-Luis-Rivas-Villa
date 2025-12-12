@@ -1,0 +1,66 @@
+<div class="info-card fondo">
+  <div class="perfil-header">
+    <div class="perfil-foto-container">
+      <ion-img [src]="usuario()?.urlImg" alt="Foto de perfil" class="perfil-foto" />
+      <ion-chip class="chip-camara" (click)="cambiarFoto()">
+        <ion-icon color="white" name="camera-outline"></ion-icon>
+      </ion-chip>
+    </div>
+
+    <h2>{{ usuario()?.nombre }} {{ usuario()?.apellidos }}</h2>
+    <p class="perfil-descripcion">
+      {{usuario()?.descripcion}}
+    </p>
+    <p class="perfil-ubicacion">
+      <ion-icon name="location-outline"></ion-icon>
+      {{ usuario()?.direccion }}
+    </p>
+  </div>
+  <!-- ⭐ RATING SELECCIONABLE -->
+  <div class="perfil-estrellas">
+    <ion-icon
+      *ngFor="let star of [].constructor(maxStars); let i = index"
+      [name]="(i + 1) <= Math.floor(ratingVisual()) ? 'star' :
+              (i < ratingVisual() && ratingVisual() % 1 !== 0 && i + 1 === Math.ceil(ratingVisual()) ? 'star-half' : 'star-outline')"
+      color="warning"
+      (click)="setRating(i + 1)">
+    </ion-icon>
+  </div>
+
+  <!-- Estadísticas -->
+  <ion-grid class="perfil-stats">
+    <ion-row>
+      <ion-col>
+        <ion-icon name="cube-outline" color="tertiary"></ion-icon>
+        <p class="numero">12</p>
+        <p class="label">Intercambios</p>
+      </ion-col>
+
+      <ion-col>
+        <ion-icon name="star-outline" color="warning"></ion-icon>
+        <p class="numero">{{media()}}</p> <!-- ⭐ MOSTRAR MEDIA -->
+        <p class="label">Valoración</p>
+      </ion-col>
+
+      <ion-col [routerLink]="['/favoritos', usuario()?.id]">
+        <ion-icon name="heart-outline" color="danger"></ion-icon>
+        <p class="numero">{{ numFavoritos | async }}</p>
+        <p class="label">Favoritos</p>
+      </ion-col>
+
+      <ion-col [routerLink]="['/seguidores', usuario()?.id]">
+        <ion-icon name="people-outline" color="medium"></ion-icon>
+        <p class="numero">{{ numSeguidores | async }}</p>
+        <p class="label">Seguidores</p>
+      </ion-col>
+    </ion-row>
+
+    <div class="caja-boton">
+      <ion-button fill="clear" expand="block" class="btn-publicar">
+        <b>Seguir</b>
+        <ion-icon class="margen-left" slot="end" name="person-add-outline"/>
+      </ion-button>
+    </div>
+
+  </ion-grid>
+</div>
