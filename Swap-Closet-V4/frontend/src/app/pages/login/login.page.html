@@ -1,0 +1,97 @@
+<ion-content class="fondo">
+
+  <div class="contenedor-central">
+    <div class="contenedor-logo">
+      <ion-img src="assets/icon/logo-app.png" alt="Logo Swap" class="logo" />
+      <p class="subtitulo">Renueva tu estilo, sin gastar de más</p>
+    </div>
+
+    <div class="card-login">
+      <h2 class="titulo">
+        {{ modoRegistro ? 'Únete a la comunidad' : '¡Bienvenido de vuelta!' }}
+      </h2>
+
+      <!-- Pestañas -->
+      <div class="tabs">
+        <button
+          class="tab"
+          [class.activo]="!modoRegistro"
+          (click)="modoRegistro = false"
+        >
+          Iniciar Sesión
+        </button>
+        <button
+          class="tab"
+          [class.activo]="modoRegistro"
+          (click)="modoRegistro = true"
+        >
+          Registro
+        </button>
+      </div>
+
+      <!-- FORMULARIO LOGIN -->
+      <ng-container *ngIf="!modoRegistro">
+        <ion-item class="input-item">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input type="email" placeholder="Correo electrónico" [(ngModel)]="correoSign"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-item">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input type="password" placeholder="Contraseña" [(ngModel)]="passwordSign"></ion-input>
+        </ion-item>
+
+        <div class="acciones">
+          <a href="#" class="olvide">¿Olvidaste tu contraseña?</a>
+          <ion-checkbox class="checkbox"></ion-checkbox>
+          <label>Recordar contraseña</label>
+        </div>
+
+        <ion-button fill="clear" expand="block" class="btn-iniciar"
+                    (click)="login()">Iniciar Sesión</ion-button>
+      </ng-container>
+
+      <!-- FORMULARIO REGISTRO -->
+      <ng-container *ngIf="modoRegistro">
+        <ion-item class="input-item">
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-input type="text" placeholder="Nombre" [(ngModel)]="nombre"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-item">
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-input type="text" placeholder="Apellidos" [(ngModel)]="apellidos"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-item">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-input type="email" placeholder="Correo electrónico" [(ngModel)]="correo"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-item">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input type="password" placeholder="Contraseña" [(ngModel)]="password"></ion-input>
+        </ion-item>
+
+        <ion-item class="input-item">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input type="password" placeholder="Repetir contraseña" [(ngModel)]="password2"></ion-input>
+        </ion-item>
+
+        <ion-button fill="clear" expand="block" class="btn-iniciar"
+                    (click)="guardarUsuario()">Crear cuenta</ion-button>
+      </ng-container>
+
+
+      <!-- Botón Google -->
+      <div class="google-box">
+        <p class="o">o</p>
+        <ion-button expand="block" fill="clear" class="btn-google">
+          <ion-icon name="logo-google"  alt="Google" class="google-icon" ></ion-icon>
+          Continuar con Google
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+</ion-content>
