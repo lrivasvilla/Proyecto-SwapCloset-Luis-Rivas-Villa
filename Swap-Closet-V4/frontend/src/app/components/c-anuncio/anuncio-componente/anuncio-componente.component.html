@@ -9,7 +9,7 @@
         ></ion-img>
 
         <ion-chip
-          [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'"
+          [ngClass]="(producto?.tipo | lowercase ) === 'intercambio' ? 'chip-rosa' : 'chip-azul'"
           class="chip-intercambio"
         >
           <b>{{ producto?.tipo }}</b>
@@ -25,11 +25,20 @@
         <div class="chip-group">
           <ion-chip
             *ngFor="let est of estilos"
-            [ngClass]="producto?.tipo === 'Intercambio' ? 'chip-rosa' : 'chip-azul'"
+            [ngClass]="(producto?.tipo | lowercase) === 'intercambio' ? 'chip-rosa' : 'chip-azul'"
           >
             <b>{{ est }}</b>
           </ion-chip>
         </div>
+
+        <ion-row>
+          <ion-col>
+            <div class="detalle-item">
+              <span class="detalle-label">Categoría</span>
+              <span class="detalle-valor">{{ producto?.categoria }}</span>
+            </div>
+          </ion-col>
+        </ion-row>
 
         <div class="detalles-section">
           <ion-row>
@@ -68,7 +77,7 @@
           <p class="fecha-date margen-left"><b>{{usuario?.direccion}}</b></p>
         </div>
 
-        <ng-container *ngIf="producto?.tipo !== 'Intercambio'">
+        <ng-container *ngIf="(producto?.tipo | lowercase )!== 'intercambio'">
           <div class="fecha-section">
             <ion-icon class="icon" name="cash-sharp"></ion-icon>
             <p class="fecha-texto">Precio por día: </p>
@@ -80,38 +89,48 @@
           <ion-icon name="calendar-sharp" class="icon"></ion-icon>
           <p class="fecha-texto">Disponible hasta el: </p>
           <p> </p>
-          <p class="fecha-date margen-left"><strong> {{ producto?.fechaDevolucion }}</strong></p>
+          <p class="fecha-date margen-left"><strong> {{ producto?.fechaDevolucion | date:'dd/MM/yyyy'  }}</strong></p>
         </div>
 
-        <ion-row class="usuario-section">
-          <ion-col class="usuario-info">
-            <ion-img [src]="usuario?.urlImg" class="avatar"></ion-img>
-            <h2 class="usuario-nombre">{{ usuario?.nombre }} {{ usuario?.apellidos }}</h2>
-          </ion-col>
+        <!-- Sección del usuario con clases nuevas -->
+        <div class="usuario-card-container">
 
-          <div class="usuario-datos">
-            <div class="usuario-rating">
-              <p class="rating">{{usuario?.raiting}}</p>
-              <ion-icon class="rating-star" name="star"></ion-icon>
-              <p class="separador">·</p>
-              <p class="intercambios">{{usuario?.intercambios}} intercambios</p>
+          <!-- Fila superior: Avatar a la izquierda + Nombre y rating al lado -->
+          <ion-row class="usuario-card-top-row">
+            <div size="3" class="usuario-card-avatar-col">
+              <ion-img [src]="usuario?.urlImg" class="usuario-card-avatar"></ion-img>
             </div>
-          </div>
 
-          <div>
-            @if(usuario?.id !== idUsuarioLogueado){
-              <ion-button fill="clear" class="btn-perfil"
-                          [routerLink]="['/perfil-otro', usuario?.id]">
-                Ver perfil
-              </ion-button>
-            }@else{
-              <ion-button fill="clear" class="btn-perfil"
-                          [routerLink]="['/perfil']">
-                Ver perfil
-              </ion-button>
-            }
-          </div>
-        </ion-row>
+            <div class="usuario-card-info-col">
+              <h2 class="usuario-card-nombre">{{ usuario?.nombre }} {{ usuario?.apellidos }}</h2>
+
+              <div class="usuario-card-rating">
+                <span class="usuario-card-rating-num">{{ usuario?.raiting }}</span>
+                <ion-icon class="usuario-card-star" name="star"></ion-icon>
+                <span class="usuario-card-separador">·</span>
+                <span class="usuario-card-intercambios">{{ usuario?.intercambios }} intercambios</span>
+              </div>
+            </div>
+
+          </ion-row>
+
+          <!-- Fila inferior: Botón Ver perfil centrado -->
+          <ion-row class="usuario-card-bottom-row">
+            <ion-col class="usuario-card-button-col">
+              @if (usuario?.id !== idUsuarioLogueado) {
+                <ion-button fill="clear" class="usuario-card-btn-perfil" [routerLink]="['/perfil-otro', usuario?.id]">
+                  Ver perfil
+                </ion-button>
+              } @else {
+                <ion-button fill="clear" class="usuario-card-btn-perfil" [routerLink]="['/perfil']">
+                  Ver perfil
+                </ion-button>
+              }
+            </ion-col>
+          </ion-row>
+
+        </div>
+
       </div>
     </ion-row>
   </ion-grid>

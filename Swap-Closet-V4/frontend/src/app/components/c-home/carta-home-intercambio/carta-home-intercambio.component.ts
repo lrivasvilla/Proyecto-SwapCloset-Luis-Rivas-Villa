@@ -5,7 +5,7 @@ import {RouterLink, RouterModule} from "@angular/router";
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
 import {Observable} from "rxjs";
-import {AsyncPipe, NgClass, NgIf, TitleCasePipe} from "@angular/common";
+import {AsyncPipe, DatePipe, NgClass, NgIf, TitleCasePipe} from "@angular/common";
 import {RaitingService} from "../../../service/raitingService/raiting.service";
 import {CartaProductoDTO} from "../../../modelos/CartaProductoDTO";
 
@@ -15,7 +15,7 @@ import {CartaProductoDTO} from "../../../modelos/CartaProductoDTO";
   styleUrls: ['./carta-home-intercambio.component.scss'],
   standalone: true,
   imports: [
-    IonicModule, RouterModule, AsyncPipe, NgClass, NgIf, TitleCasePipe
+    IonicModule, RouterModule, AsyncPipe, NgClass, NgIf, TitleCasePipe, DatePipe
   ]
 })
 export class CartaHomeIntercambioComponent {

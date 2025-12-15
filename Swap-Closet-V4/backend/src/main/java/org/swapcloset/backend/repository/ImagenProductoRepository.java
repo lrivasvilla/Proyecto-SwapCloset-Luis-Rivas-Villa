@@ -37,4 +37,7 @@ public interface ImagenProductoRepository extends JpaRepository<ImagenProducto, 
 
     // Buscar por fragmento de URL
     List<ImagenProducto> findByUrlImgContainingIgnoreCase(String fragment);
+
+    Optional<ImagenProducto> findByProductoIdAndOrden(Integer productoId, Integer orden);
+
 }

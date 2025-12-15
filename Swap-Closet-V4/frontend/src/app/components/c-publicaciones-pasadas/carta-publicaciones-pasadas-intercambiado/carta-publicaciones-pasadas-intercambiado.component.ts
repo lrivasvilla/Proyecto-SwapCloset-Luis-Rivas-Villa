@@ -4,7 +4,7 @@ import {ProductoDTO} from "../../../modelos/ProductoDTO";
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {Observable} from "rxjs";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
-import {AsyncPipe} from "@angular/common";
+import {AsyncPipe, DatePipe} from "@angular/common";
 
 @Component({
     selector: 'app-carta-publicaciones-pasadas-intercambiado',
@@ -13,7 +13,8 @@ import {AsyncPipe} from "@angular/common";
     standalone: true,
   imports: [
     IonicModule,
-    AsyncPipe
+    AsyncPipe,
+    DatePipe
   ]
 })
 export class CartaPublicacionesPasadasIntercambiadoComponent  implements OnInit {

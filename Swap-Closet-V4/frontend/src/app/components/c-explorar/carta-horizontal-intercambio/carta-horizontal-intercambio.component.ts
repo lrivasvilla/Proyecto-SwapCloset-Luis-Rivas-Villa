@@ -4,7 +4,7 @@ import {ProductoDTO} from "../../../modelos/ProductoDTO";
 import {Observable} from "rxjs";
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
-import {AsyncPipe, NgClass, NgIf} from "@angular/common";
+import {AsyncPipe, DatePipe, NgClass, NgIf} from "@angular/common";
 import {RaitingService} from "../../../service/raitingService/raiting.service";
 
 @Component({
@@ -16,7 +16,8 @@ import {RaitingService} from "../../../service/raitingService/raiting.service";
     IonicModule,
     NgIf,
     AsyncPipe,
-    NgClass
+    NgClass,
+    DatePipe
   ]
 })
 export class CartaHorizontalIntercambioComponent  implements OnInit {

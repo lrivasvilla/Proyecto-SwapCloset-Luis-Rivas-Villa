@@ -17,7 +17,18 @@ export class ImagenProductoService {
   }
 
   guardarImagenProducto(imagenProductoDTO: ImagenProductoDTO){
-    return this.http.post<ImagenProductoDTO>(this.apiUrl, imagenProductoDTO);
+    return this.http.post<ImagenProductoDTO>(`${this.apiUrl}/create`, imagenProductoDTO);
   }
 
+  updateImagenProducto(id: number, dto: ImagenProductoDTO): Observable<ImagenProductoDTO> {
+    return this.http.put<ImagenProductoDTO>(`${this.apiUrl}/update/${id}`, dto);
+  }
+
+  getImagenPrincipal(id: number): Observable<string> {
+    return this.http.get<string>(`${this.apiUrl}/img-principal/${id}`);
+  }
+
+  actualizarImagenPrincipal(idProducto: number, ruta: string) {
+    return this.http.put(`${this.apiUrl}/principal`, {idProducto, ruta});
+  }
 }

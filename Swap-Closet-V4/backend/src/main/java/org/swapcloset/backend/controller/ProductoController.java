@@ -142,7 +142,7 @@ public class ProductoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductoDTO> update(@PathVariable Integer id, @RequestBody ProductoDTO productoDTO) {
+    public ResponseEntity<ProductoDTO> update(@PathVariable Integer id, @Valid @RequestBody ProductoDTO productoDTO) {
         if (!productoService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }

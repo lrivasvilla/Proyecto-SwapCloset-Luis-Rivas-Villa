@@ -203,10 +203,8 @@ public class UsuarioService {
         if (usuarioDTO == null) {
             throw new IllegalArgumentException("UsuarioDTO no puede ser null");
         }
-        // Evitar crear con id definido
         usuarioDTO.setId(null);
 
-        // Comprobar email duplicado si se proporciona
         if (usuarioDTO.getEmail() != null && usuarioRepository.findByEmail(usuarioDTO.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Ya existe un usuario con ese email");
         }
@@ -230,10 +228,8 @@ public class UsuarioService {
         Usuario entidad = usuarioRepository.findById(usuarioDTO.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado: " + usuarioDTO.getId()));
 
-        // Actualización parcial usando el mapper (ignora nulls y relaciones)
         usuarioMapper.updateEntityFromDTO(usuarioDTO, entidad);
 
-        // Si se cambia email, verificar duplicado con otro usuario
         if (usuarioDTO.getEmail() != null) {
             usuarioRepository.findByEmail(usuarioDTO.getEmail())
                     .filter(u -> !u.getId().equals(entidad.getId()))

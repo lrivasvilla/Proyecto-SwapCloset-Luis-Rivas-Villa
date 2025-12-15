@@ -15,19 +15,13 @@ export class ModalFotosComponent {
   private modalCtrl = inject(ModalController);
   private imagenesFormService = inject(ImagenFormService);
 
-  imagenesDisponibles: string[] = [
-    'assets/img/productos/chupa-cuero.png',
-    'assets/img/productos/pantalones-azules.png',
-    'assets/img/productos/vestido-verde.jpg',
-    'assets/img/productos/zapatos-nike.png'
-  ];
+  imagenesDisponibles: string[] = this.imagenesFormService.getListaImagenes()
 
   cerrar() {
     this.modalCtrl.dismiss();
   }
 
   seleccionar(ruta: string) {
-    // Al seleccionar, se cierra el modal y se pasa la ruta en el objeto 'data'
     this.imagenesFormService.agregarFoto(ruta);
     this.modalCtrl.dismiss({ ruta });
   }

@@ -8,11 +8,10 @@ import org.swapcloset.backend.service.ChatService;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 
-
 @RestController
 @RequestMapping("/api/chats")
+@CrossOrigin(origins = "http://localhost:8100")
 public class ChatController {
-
     private final ChatService chatService;
 
     public ChatController(ChatService chatService) {
@@ -55,7 +54,7 @@ public class ChatController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ChatDTO> update(@PathVariable Integer id, @RequestBody ChatDTO dto) {
+    public ResponseEntity<ChatDTO> update(@PathVariable Integer id,@Valid @RequestBody ChatDTO dto) {
         dto.setId(id);
         ChatDTO updated = chatService.update(dto);
         return ResponseEntity.ok(updated);

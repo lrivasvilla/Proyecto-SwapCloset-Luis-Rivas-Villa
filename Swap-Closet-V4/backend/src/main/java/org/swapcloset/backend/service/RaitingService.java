@@ -5,8 +5,10 @@ import jakarta.persistence.PersistenceContext;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import org.swapcloset.backend.converter.RaitingMapper;
 import org.swapcloset.backend.dto.RaitingDTO;
 import org.swapcloset.backend.modelos.Raiting;
@@ -72,6 +74,16 @@ public class RaitingService {
     @Transactional
     public RaitingDTO save(RaitingDTO dto) {
 
+        // 1. Verificación de existencia de usuarios
+        if (!usuarioRepository.existsById(dto.getIdPuntuado())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Usuario puntuado no encontrado con ID: " + dto.getIdPuntuado());
+        }
+        if (!usuarioRepository.existsById(dto.getIdPuntuador())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Usuario puntuador no encontrado con ID: " + dto.getIdPuntuador());
+        }
+
         Raiting entity = new Raiting();
         entity.setId(new RaitingId(dto.getIdPuntuado(), dto.getIdPuntuador()));
 
@@ -92,16 +104,26 @@ public class RaitingService {
     @Transactional
     public RaitingDTO update(RaitingDTO dto) {
         if (dto == null || dto.getIdPuntuado() == null || dto.getIdPuntuador() == null) {
-            throw new IllegalArgumentException("Los ids del raiting no deben ser null");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los ids del raiting no deben ser null");
         }
         RaitingId id = new RaitingId(dto.getIdPuntuado(), dto.getIdPuntuador());
-        Raiting existente = raitingRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("No existe Raiting con id: " + id));
 
-        // Actualizar campos no nulos (mapper ignora relaciones)
+
+        Raiting existente = raitingRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "No existe Raiting con ID compuesto: Puntuado=" + dto.getIdPuntuado() + ", Puntuador=" + dto.getIdPuntuador()));
+
+        if (!usuarioRepository.existsById(dto.getIdPuntuado())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Usuario puntuado no encontrado con ID: " + dto.getIdPuntuado());
+        }
+        if (!usuarioRepository.existsById(dto.getIdPuntuador())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Usuario puntuador no encontrado con ID: " + dto.getIdPuntuador());
+        }
+
         raitingMapper.updateEntityFromDTO(dto, existente);
 
-        // asegurar referencias correctas (no deberían cambiar porque son parte del id)
         existente.setPuntuado(em.getReference(Usuario.class, dto.getIdPuntuado()));
         existente.setPuntuador(em.getReference(Usuario.class, dto.getIdPuntuador()));
 

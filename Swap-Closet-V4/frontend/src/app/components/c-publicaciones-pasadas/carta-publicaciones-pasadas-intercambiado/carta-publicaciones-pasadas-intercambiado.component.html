@@ -37,7 +37,7 @@
           </ion-col>
           <ion-col class="derecha">
             <ion-icon class=" margen para-iconos" name="calendar-number-outline"></ion-icon>
-            <p class="margen">{{producto()?.fechaDevolucion}}</p>
+            <p class="margen">{{producto()?.fechaDevolucion | date:'dd/MM/yyyy' }}</p>
           </ion-col>
         </ion-row>
 

@@ -13,7 +13,9 @@ import org.swapcloset.backend.converter.ProductoMapper;
 import org.swapcloset.backend.dto.CartaProductoDTO;
 import org.swapcloset.backend.dto.CartaProductoIntercambioDTO;
 import org.swapcloset.backend.dto.ProductoDTO;
+import org.swapcloset.backend.modelos.ImagenProducto;
 import org.swapcloset.backend.modelos.Producto;
+import org.swapcloset.backend.modelos.TipoProducto;
 import org.swapcloset.backend.modelos.Usuario;
 import org.swapcloset.backend.repository.*;
 
@@ -137,7 +139,7 @@ public class ProductoService {
 
     @Transactional(readOnly = true)
     public List<CartaProductoIntercambioDTO> getTodasCartasProductosIntercambio() {
-        List<Producto> productosActivos = productoRepository.findAll();
+        List<Producto> productosActivos = productoRepository.findByActivoTrue();
 
         return productosActivos.stream()
                 .map(producto -> getCartaProductoIntercambioDTOidProducto(producto.getId()))
@@ -250,86 +252,64 @@ public class ProductoService {
 
     @Transactional
     public ProductoDTO save(ProductoDTO productoDTO) {
-        // Validación genérica de nulos
-        if (productoDTO == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ProductoDTO no debe ser null");
+
+        // 1. Regla de negocio: usuario debe existir
+        if (!usuarioRepository.existsById(productoDTO.getIdUsuario())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "No existe el id de usuario"
+            );
         }
 
-        if(!usuarioRepository.existsById(productoDTO.getIdUsuario())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No existe el id de usuario");
-        }
-
-        if (!"intercambio".equals(productoDTO.getTipo()) && !"prestamo".equals(productoDTO.getTipo())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tipo debe ser 'intercambio' o 'prestamo'");
-        }
-
-        // Convertir DTO a entidad
         Producto entidad = productoMapper.toEntity(productoDTO);
 
-        // Asignar referencia gestionada a usuario
-        Usuario usuarioRef;
-        try {
-            usuarioRef = em.getReference(Usuario.class, productoDTO.getIdUsuario());
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado con id: " + productoDTO.getIdUsuario());
-        }
+        Usuario usuarioRef = em.getReference(
+                Usuario.class,
+                productoDTO.getIdUsuario()
+        );
         entidad.setUsuario(usuarioRef);
 
-        // Guardar la entidad
+        if (entidad.getImagenes() != null) {
+            entidad.getImagenes()
+                    .forEach(img -> img.setProducto(entidad));
+        }
+
         Producto saved = productoRepository.save(entidad);
 
-        // Convertir a DTO de salida
         return productoMapper.toDTO(saved);
     }
 
 
     @Transactional
     public ProductoDTO update(ProductoDTO productoDTO) {
-        // Validación básica
-        if (productoDTO == null || productoDTO.getId() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ProductoDTO y su id no deben ser null");
+
+        if (!productoRepository.existsById(productoDTO.getId())) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "No existe Producto con id: " + productoDTO.getId()
+            );
         }
 
-        // Validación de campos obligatorios
-        if (productoDTO.getTipo() != null &&
-                !"intercambio".equals(productoDTO.getTipo()) && !"prestamo".equals(productoDTO.getTipo())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tipo debe ser 'intercambio' o 'prestamo'");
+        if (!usuarioRepository.existsById(productoDTO.getIdUsuario())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "No existe el id de usuario"
+            );
         }
 
-        if (productoDTO.getIdUsuario() == null ||
-                productoDTO.getTitulo() == null ||
-                productoDTO.getEstilo() == null ||
-                productoDTO.getMarca() == null ||
-                productoDTO.getEstado() == null ||
-                productoDTO.getCategoria() == null ||
-                productoDTO.getTalla() == null) {
+        Producto entidad = productoMapper.toEntity(productoDTO);
 
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Faltan campos obligatorios en el Producto");
+        Usuario usuarioRef = em.getReference(
+                Usuario.class, productoDTO.getIdUsuario()
+        );
+        entidad.setUsuario(usuarioRef);
+
+        if (entidad.getImagenes() != null) {
+            entidad.getImagenes()
+                    .forEach(img -> img.setProducto(entidad));
         }
 
-        // Obtener la entidad existente
-        Producto existente = productoRepository.findById(productoDTO.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "No existe Producto con id: " + productoDTO.getId()));
-
-        // Actualización parcial usando el mapper
-        productoMapper.updateEntityFromDTO(productoDTO, existente);
-
-        // Actualizar la referencia gestionada a Usuario si se proporciona
-        if (productoDTO.getIdUsuario() != null) {
-            try {
-                Usuario usuarioRef = em.getReference(Usuario.class, productoDTO.getIdUsuario());
-                existente.setUsuario(usuarioRef);
-            } catch (EntityNotFoundException e) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Usuario no encontrado con id: " + productoDTO.getIdUsuario());
-            }
-        }
-
-        // Guardar la entidad actualizada
-        Producto updated = productoRepository.save(existente);
-
-        // Convertir a DTO y devolver
+        Producto updated = productoRepository.save(entidad);
         return productoMapper.toDTO(updated);
     }
 

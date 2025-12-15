@@ -23,7 +23,7 @@ public class ImagenProducto {
     @Column(name = "orden")
     private Integer orden = 1;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_producto", referencedColumnName = "id")
     private Producto producto;
 }

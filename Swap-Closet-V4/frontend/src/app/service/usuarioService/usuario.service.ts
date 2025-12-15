@@ -22,6 +22,10 @@ export class UsuarioService {
     return this.http.post<UsuarioDTO>(this.apiUrl, usuario);
   }
 
+  updateUsuario(id: number, usuario: UsuarioDTO): Observable<UsuarioDTO> {
+    return this.http.put<UsuarioDTO>(`${this.apiUrl}/${id}`, usuario);
+  }
+
   verificarEmail(email: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/exists/email/${email}`);
   }

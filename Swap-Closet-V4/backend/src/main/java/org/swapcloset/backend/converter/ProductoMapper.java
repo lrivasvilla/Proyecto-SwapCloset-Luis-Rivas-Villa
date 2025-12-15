@@ -16,15 +16,15 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ProductoMapper {
 
-    @Mapping(target = "fechaDevolucion", source = "fechaDevolucion", dateFormat = "dd/MM/yy")
-    @Mapping(target = "fechaCreacion", source = "fechaCreacion", dateFormat = "dd/MM/yy")
+    //@Mapping(target = "fechaDevolucion", source = "fechaDevolucion", dateFormat = "dd/MM/yy")
+    //@Mapping(target = "fechaCreacion", source = "fechaCreacion", dateFormat = "dd/MM/yy")
     @Mapping(target = "precio", source = "precio", qualifiedByName = "convertBigDecimalToString")
     @Mapping(target = "tipo", source = "tipo", qualifiedByName = "tipoProductoToString")
     @Mapping(target = "idUsuario", source = "usuario.id")
     ProductoDTO toDTO(Producto producto);
 
     @Mapping(target = "fechaDevolucion", source = "fechaDevolucion", qualifiedByName = "stringToLocalDateTime")
-    @Mapping(target = "fechaCreacion", source = "fechaCreacion", dateFormat = "dd/MM/yy", ignore = true)
+    @Mapping(target = "fechaCreacion", source = "fechaCreacion", qualifiedByName = "stringToLocalDateTime")
     @Mapping(target = "precio", source = "precio", qualifiedByName = "convertStringToBigDecimal")
     @Mapping(target = "tipo", source = "tipo", qualifiedByName = "stringToTipoProducto")
     @Mapping(target = "usuario.id", source = "idUsuario")
@@ -33,8 +33,8 @@ public interface ProductoMapper {
     List<ProductoDTO> toDTOsList(List<Producto> productos);
     List<Producto> toEntitiesList(List<ProductoDTO> productoDTOS);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateEntityFromDTO(ProductoDTO dto, @MappingTarget Producto entidad);
+//    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+//    void updateEntityFromDTO(ProductoDTO dto, @MappingTarget Producto entidad);
 
     @Named("convertStringToBigDecimal")
     default BigDecimal convertStringToBigDecimal(String value) {

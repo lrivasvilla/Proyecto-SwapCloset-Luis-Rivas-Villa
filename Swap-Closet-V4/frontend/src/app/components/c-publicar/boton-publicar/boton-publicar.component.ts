@@ -49,7 +49,7 @@ export class BotonPublicarComponent implements OnInit {
 
       // 2) Validación específica de préstamos
       if (form.tipoOferta === 'prestamo') {
-        if (!form.precio || !form.fechaDevolucion) {
+        if (form.precio == null || form.precio === undefined) {
           return this.mostrarToast('Precio y fecha de devolución obligatorios');
         }
       }
@@ -63,6 +63,7 @@ export class BotonPublicarComponent implements OnInit {
 
       // 4) Construir DTO del producto
       const productoDTO = this.formService.convertirAProductoDTO(usuario.id);
+
 
       // 5) Guardar el producto en el backend
       const productoCreado = await firstValueFrom(
@@ -106,10 +107,6 @@ export class BotonPublicarComponent implements OnInit {
           orden: i + 1,           // El orden es el índice + 1
           idProducto: idProducto  // ID del producto recién creado
         };
-
-        console.log("***** Guardando Imagen: " + dto.urlImg);
-        console.log("***** Orden: " + dto.orden);
-        console.log("***** ID Producto: " + dto.idProducto);
 
         // 3. Llamada al servicio HTTP para guardar la imagen
         // Nota: Si el servicio devuelve un Observable, 'firstValueFrom' espera la respuesta.

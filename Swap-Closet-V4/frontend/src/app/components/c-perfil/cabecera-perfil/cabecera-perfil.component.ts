@@ -1,13 +1,11 @@
 import {Component, effect, inject, Input, input, OnInit, signal} from '@angular/core';
-import { IonicModule, ToastController } from '@ionic/angular';
+import {IonicModule, ModalController, ToastController} from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import{RouterLink} from "@angular/router";
-import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
-import {Observable} from "rxjs";
-import {RaitingService} from "../../../service/raitingService/raiting.service";
-import {FavoritosService} from "../../../service/favoritosService/favoritos.service";
-import {SeguidoresService} from "../../../service/seguidoresService/seguidores.service";
 import {UsuarioEstadisticasDTO} from "../../../modelos/UsuarioEstadisticasDTO";
+import {ModalFotosPerfilComponent} from "../modal-fotos-perfil/modal-fotos-perfil.component";
+import {AuthService} from "../../../service/authService/auth.service";
+import {UsuarioService} from "../../../service/usuarioService/usuario.service";
 
 @Component({
   selector: 'app-cabecera-perfil',
@@ -18,19 +16,63 @@ import {UsuarioEstadisticasDTO} from "../../../modelos/UsuarioEstadisticasDTO";
 })
 export class CabeceraPerfilComponent{
 
+  maxStars = 5;
   @Input() usuario = signal<UsuarioEstadisticasDTO | null>(null);
 
-  maxStars = 5;
+  private modalCtrl = inject(ModalController);
+  private usuarioService = inject(UsuarioService);
+  private authService = inject(AuthService);
 
   constructor(private toastCtrl: ToastController) {}
 
   async cambiarFoto() {
-    const toast = await this.toastCtrl.create({
-      message: 'Abrir selector de imagen 📸',
-      duration: 1500,
-      position: 'top'
+    const modal = await this.modalCtrl.create({
+      component: ModalFotosPerfilComponent,
+      cssClass: 'modal-galeria'
     });
-    await toast.present();
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (!data?.ruta) return;
+
+    const usuarioActual = this.usuario();
+    if (!usuarioActual?.id) {
+      const toast = await this.toastCtrl.create({
+        message: 'Usuario no válido',
+        duration: 2000,
+        color: 'danger'
+      });
+      await toast.present();
+      return;
+    }
+
+    // 1️⃣ Actualización local
+    usuarioActual.urlImg = data.ruta;
+
+    // 2️⃣ Guardar usuario completo
+    this.usuarioService.updateUsuario(usuarioActual.id, usuarioActual)
+      .subscribe({
+        next: async (usuarioGuardado) => {
+          this.usuario.set(usuarioGuardado); // sincroniza signal
+
+          const toast = await this.toastCtrl.create({
+            message: 'Foto de perfil actualizada',
+            duration: 2000,
+          });
+          await toast.present();
+        },
+        error: async () => {
+          const toast = await this.toastCtrl.create({
+            message: 'Error al guardar la foto',
+            duration: 2000,
+            color: 'danger'
+          });
+          await toast.present();
+        }
+      });
   }
+
+
 }
 

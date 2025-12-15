@@ -6,6 +6,21 @@ import {ImagenProductoDTO} from "../../modelos/ImagenProductoDTO";
 })
 export class ImagenFormService {
 
+  imagenesDisponibles: string[] = [
+    'assets/img/productos/camisa.jpg',
+    'assets/img/productos/chaqueta-marron.JPG',
+    'assets/img/productos/chaqueta-verde.JPG',
+    'assets/img/productos/chupa-cuero.png',
+    'assets/img/productos/gorra.jpg',
+    'assets/img/productos/pantalones-azules.png',
+    'assets/img/productos/sudadera-negra.JPG',
+    'assets/img/productos/vestido-verde.jpg',
+    'assets/img/productos/zapatos-nike.png',
+  ];
+
+  getListaImagenes(): string[] {
+    return this.imagenesDisponibles;
+  }
 
   public fotosSeleccionadas: string[] = []; // Se mantiene pública para el acceso desde componentes (SubirFotoComponent)
 

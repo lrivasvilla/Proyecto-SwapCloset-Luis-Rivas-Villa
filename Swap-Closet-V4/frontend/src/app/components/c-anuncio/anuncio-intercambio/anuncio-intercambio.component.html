@@ -1,116 +1,152 @@
-<ion-content>
-  <ion-row>
-    <ion-col class="centro" size="2">
-      <ion-button fill="clear" routerLink="/home">
-        <ion-icon class="icono" size="large" name="arrow-back-outline"></ion-icon>
-      </ion-button>
-    </ion-col>
+<div class="producto-card">
+  <ion-grid>
+    <ion-row>
+      <div class="producto-card">
+        <ion-grid>
+          <ion-row>
+            <div class="imagen-container">
+              <ion-img [src]="primeraImagen || 'assets/icon/card-media.png'" alt="Imagen del producto" class="producto-imagen"></ion-img>
 
-    <ion-col class="izquierda" >
-      <h2><b>Detalle del anuncio</b></h2>
-    </ion-col>
+              <ion-chip class="chip-camara" (click)="cambiarFoto()">
+                <ion-icon class="icono-camara" color="white" name="camera-outline"></ion-icon>
+              </ion-chip>
 
-  </ion-row>
-  <div class="producto-card">
-    <ion-grid>
-      <ion-row>
-        <!-- Columna de imagen -->
-        <ion-row>
-          <div class="imagen-container">
-            <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" class="producto-imagen">
-            <ion-chip class="chip-intercambio"><b>Intercambio</b></ion-chip>
-          </div>
-        </ion-row>
-
-        <!-- Columna de información -->
-        <ion-row>
-          <div class="info-container">
-            <!-- Título y marca -->
-            <h2 class="producto-titulo">Vestido verde Versace</h2>
-            <p class="producto-descripcion">
-              Hermoso vestido Versace. Perfecto para ocasiones especiales o citas románticas. Solo usado 2 veces, en excelente estado. La tela es muy suave y cómoda.
-            </p>
-
-            <div class="chip-group">
               <ion-chip
-                class="chip-rosa"
-                *ngFor="let est of estilos">
-                {{ est }}
+                [ngClass]="(producto?.tipo | lowercase) === 'intercambio' ? 'chip-rosa' : 'chip-azul'"
+                class="chip-intercambio"
+                (click)="seleccionarTipoOferta()">
+                <b>{{ producto?.tipo }}</b>
               </ion-chip>
             </div>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ion-row>
 
-            <!-- Detalles -->
-            <div class="detalles-section">
-              <ion-row>
-                <ion-col>
-                  <div class="detalle-item">
-                    <span class="detalle-label">Talla</span>
-                    <span class="detalle-valor">S</span>
-                  </div>
-                </ion-col>
-                <ion-col>
-                  <div class="detalle-item">
-                    <span class="detalle-label">Estado</span>
-                    <span class="detalle-valor">Excelente</span>
-                  </div>
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <div class="detalle-item">
-                    <span class="detalle-label">Marca</span>
-                    <span class="detalle-valor">Versace</span>
-                  </div>
-                </ion-col>
-                <ion-col>
-                  <div class="detalle-item">
-                    <span class="detalle-label">Color</span>
-                    <span class="detalle-valor">Verde</span>
-                  </div>
-                </ion-col>
-              </ion-row>
+    <ion-row>
+      <div class="info-container">
+
+        <ion-input class="producto-titulo edit-input" [(ngModel)]="producto.titulo"></ion-input>
+
+        <ion-textarea class="producto-descripcion edit-textarea" autoGrow="true" [(ngModel)]="producto.descripcion"></ion-textarea>
+
+        <div class="chip-group">
+          <ion-chip
+            *ngFor="let est of estilosSeleccionados"
+            [ngClass]="(producto?.tipo | lowercase) === 'intercambio' ? 'chip-rosa' : 'chip-azul'"
+          >
+            {{ est }}
+            <ion-icon name="close-circle" class="icon-close" (click)="eliminarEstilo(est)"></ion-icon>
+          </ion-chip>
+
+          <ion-chip
+            class="chip-add"
+            (click)="agregarEstilo()"
+            [ngClass]="(producto?.tipo | lowercase) === 'intercambio' ? 'chip-rosa' : 'chip-azul'"
+          >
+            <ion-icon name="add-outline"></ion-icon>
+          </ion-chip>
+        </div>
+
+        <ion-row>
+          <ion-col>
+            <div class="detalle-item" (click)="seleccionarCategoria()">
+              <span class="detalle-label">Categoría</span>
+              <span class="detalle-valor">{{ producto?.categoria }}</span>
             </div>
-
-            <!-- Tipo ubicación-->
-            <div class="fecha-section">
-              <ion-icon class="icon" name="location-sharp"></ion-icon>
-              <p class="fecha-texto">Ubicación</p>
-            </div>
-
-            <!-- Fecha límite -->
-            <div class="fecha-section">
-              <ion-icon name="calendar-sharp" class="icon"></ion-icon>
-              <p class="fecha-texto">Disponible hasta el </p>
-              <p class="separador"></p>
-              <p class="fecha-date"><strong> 15 Dic 2025</strong></p>
-            </div>
-
-            <!-- Usuario -->
-            <ion-row class="usuario-section">
-              <ion-col class="usuario-info">
-                <img src="https://ionicframework.com/docs/img/demos/avatar.svg" class="avatar">
-                <h2 class="usuario-nombre">Ana Martinez</h2>
-              </ion-col>
-
-              <div class="usuario-datos">
-                <div class="usuario-rating">
-                  <p class="rating">4.8</p>
-                  <ion-icon class="rating-star" name="star"></ion-icon>
-                  <p class="separador">·</p>
-                  <p class="intercambios">12 intercambios</p>
-                </div>
-              </div>
-
-              <div>
-                <ion-button fill="clear" class="btn-perfil">
-                  Ver perfil
-                </ion-button>
-              </div>
-            </ion-row>
-
-          </div>
+          </ion-col>
         </ion-row>
-      </ion-row>
-    </ion-grid>
-  </div>
-</ion-content>
+
+        <div class="detalles-section">
+          <ion-row>
+            <ion-col>
+              <div class="detalle-item" (click)="seleccionarTalla()">
+                <span class="detalle-label">Talla</span>
+                <span class="detalle-valor">{{ producto.talla || 'Selecciona talla' }}</span>
+              </div>
+            </ion-col>
+
+            <ion-col>
+              <div (click)="seleccionarEstado()" class="detalle-item">
+                <span class="detalle-label">Estado</span>
+                <span class="detalle-valor">{{ producto.estado || 'Selecciona estado' }}</span>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <div class="detalle-item">
+                <span class="detalle-label2">Marca</span>
+                <ion-input class="detalle-valor" [(ngModel)]="producto.marca"></ion-input>
+              </div>
+            </ion-col>
+
+            <ion-col>
+              <div class="detalle-item"  (click)="seleccionarColor()">
+                <span class="detalle-label">Color</span>
+                <span class="detalle-valor">{{ producto.color || 'Selecciona color' }}</span>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+
+        <div class="fecha-section">
+          <ion-icon name="calendar-sharp" class="icon"></ion-icon>
+          <p class="fecha-texto">Disponible hasta el:</p>
+
+          <ion-button class="btn-modal" fill="outline" size="small" (click)="abrirFechaModal()">
+            <ion-icon slot="start" name="calendar-outline"></ion-icon>
+            {{ producto.fechaDevolucion || 'Selecciona fecha'  | date:'dd/MM/yyyy' }}
+          </ion-button>
+
+          <ion-modal
+            #modalFecha
+            [keepContentsMounted]="true"
+            class="modal-calendario"
+            [breakpoints]="[0, 0.5]"
+            [initialBreakpoint]="0.5" > <ng-template>
+            <ion-content class="ion-padding">
+              <ion-datetime
+                presentation="date-time"
+                [(ngModel)]="producto.fechaDevolucion"
+                [showDefaultButtons]="true"
+                (ionCancel)="cerrarFechaModal()"
+                (ionChange)="cerrarFechaModal()">
+              </ion-datetime>
+            </ion-content>
+          </ng-template>
+          </ion-modal>
+        </div>
+
+        <ng-container *ngIf="(producto?.tipo | lowercase) !== 'intercambio'">
+          <div class="precio-section editable-price-line">
+            <ion-icon class="icon" name="cash-sharp"></ion-icon>
+            <span class="precio-texto-label">Precio por día:</span>
+
+            <ion-input
+              type="number"
+              class="precio-valor edit-input-inline"
+              placeholder="0"
+              [(ngModel)]="producto.precio"
+              inputmode="decimal">
+            </ion-input>
+
+            <span class="precio-unidad"><b>€</b></span>
+          </div>
+        </ng-container>
+
+        <ion-row class="acciones-edicion">
+          <ion-col>
+            <ion-button class="btn-cancelar" expand="block" (click)="cancelarEdicion()"><b>Cancelar</b></ion-button>
+          </ion-col>
+
+          <ion-col>
+            <ion-button class="btn-guardar" expand="block" (click)="guardarCambios()"><b>Guardar</b></ion-button>
+          </ion-col>
+        </ion-row>
+
+      </div>
+    </ion-row>
+  </ion-grid>
+</div>

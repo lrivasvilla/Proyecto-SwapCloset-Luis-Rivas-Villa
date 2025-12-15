@@ -7,6 +7,8 @@ import {Observable} from "rxjs";
 import {RaitingService} from "../../service/raitingService/raiting.service";
 import {FavoritosService} from "../../service/favoritosService/favoritos.service";
 import {SeguidoresService} from "../../service/seguidoresService/seguidores.service";
+import {UsuarioEstadisticasDTO} from "../../modelos/UsuarioEstadisticasDTO";
+import {UsuarioService} from "../../service/usuarioService/usuario.service";
 
 @Component({
     selector: 'app-cabecera-perfil',
@@ -20,69 +22,66 @@ import {SeguidoresService} from "../../service/seguidoresService/seguidores.serv
     AsyncPipe
   ]
 })
-export class CabeceraPerfilComponent {
+export class CabeceraPerfilComponent{
 
-  @Input() usuario = signal<UsuarioDTO | null>(null);
+  @Input() usuario = signal<UsuarioEstadisticasDTO | null>(null);
 
-  media = signal<number>(0);               // valor real del backend
-  ratingSeleccionado = signal<number>(0);  // valor manual
+  usuarioEstadisticas = signal<UsuarioEstadisticasDTO | null>(null);
 
-  numFavoritos: Observable<number> | undefined;
-  numSeguidores: Observable<number> | undefined;
+  private usuarioService = inject(UsuarioService);
+  private toastCtrl = inject(ToastController); // Se inyecta aquí en lugar del constructor
 
+  ratingSeleccionado = signal<number>(0);
   maxStars = 5;
 
-  private raitingService = inject(RaitingService);
-  private favoritosService = inject(FavoritosService);
-  private seguidoresService = inject(SeguidoresService);
-
-  constructor(private toastCtrl: ToastController) {
-
-    // Cuando cambia el usuario → pedir media
+  constructor() {
     effect(() => {
-      const u = this.usuario();
-      if (u?.id) {
-        this.raitingService.getMediaRaitingByUsuario(u.id)
-          .subscribe(valor => {
-            this.media.set(valor);
-          });
-        this.numFavoritos = this.favoritosService.getCountFavoritos(u.id);
-        this.numSeguidores = this.seguidoresService.getCountSeguidores(u.id);
-      }
+      this.cargarUsuario();
     });
   }
 
-  // ⭐ Selección manual del usuario
-  setRating(valor: number) {
-    this.ratingSeleccionado.set(valor);
-    this.toastVotacion()
+  cargarUsuario() {
+    const usuarioActual = this.usuario();
+
+    if (usuarioActual && usuarioActual.id != null) {
+      const idUsuario: number = usuarioActual.id;
+
+      this.usuarioService.getUsuarioEstadisticas(idUsuario)
+        .subscribe(estadisticas => {
+          this.usuarioEstadisticas.set(estadisticas);
+        });
+    } else {
+      this.usuarioEstadisticas.set(null);
+    }
   }
 
-  // ⭐ Valor visual de estrellas (media o selección)
   ratingVisual = computed(() => {
+    const u = this.usuario();
+    if (!u) return 0;
+
+    const ratingBase = u.raiting ?? 0;
+
     return this.ratingSeleccionado() === 0
-      ? this.media()
+      ? ratingBase
       : this.ratingSeleccionado();
   });
 
-  async cambiarFoto() {
-    const toast = await this.toastCtrl.create({
-      message: 'Abrir selector de imagen 📸',
-      duration: 1500,
-      position: 'bottom'
-    });
-    await toast.present();
+  setRating(valor: number) {
+    this.ratingSeleccionado.set(valor);
+    this.toastVotacion();
   }
 
-  async toastVotacion(ratingSeleccionado: number = this.ratingSeleccionado()) {
+  async toastVotacion(rating = this.ratingSeleccionado()) {
+    const u = this.usuario();
+
     const toast = await this.toastCtrl.create({
-      message: '¡Has votado con '+ratingSeleccionado+' ⭐ a '+this.usuario()?.nombre+'!',
+      message: `¡Has votado con ${rating} ⭐ a ${u?.nombre}!`,
       duration: 1500,
       position: 'top'
     });
+
     await toast.present();
   }
 
   protected readonly Math = Math;
-
 }
