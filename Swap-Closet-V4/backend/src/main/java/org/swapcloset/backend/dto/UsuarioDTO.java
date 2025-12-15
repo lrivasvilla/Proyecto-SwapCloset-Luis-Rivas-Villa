@@ -1,9 +1,7 @@
 package org.swapcloset.backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.List;
@@ -26,10 +24,15 @@ public class UsuarioDTO {
     private String estilo;
     private String urlImg;
     private String direccion;
+    @Pattern(regexp = "XS|S|M|L|XL", message = "La talla de camiseta debe ser XS, S, M, L o XL")
     @JsonProperty("tCamiseta")
     private String tCamiseta;
+    @Min(value = 38, message = "La talla de pantalón mínima es 38")
+    @Max(value = 46, message = "La talla de pantalón máxima es 46")
     @JsonProperty("tPantalon")
     private Integer tPantalon;
+    @Min(value = 36, message = "La talla de calzado mínima es 36")
+    @Max(value = 42, message = "La talla de calzado máxima es 42")
     @JsonProperty("tCalzado")
     private Integer tCalzado;
 

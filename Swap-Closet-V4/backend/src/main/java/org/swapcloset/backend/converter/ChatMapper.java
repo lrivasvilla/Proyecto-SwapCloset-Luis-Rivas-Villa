@@ -13,6 +13,7 @@ import org.swapcloset.backend.modelos.TipoProducto;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -29,11 +30,6 @@ public interface ChatMapper {
     @Mapping(source = "estadoIntercambio", target = "estadoIntercambio", qualifiedByName = "tipoEstadoIntercambioToString")
     ChatDTO toDTO(Chat chat);
 
-    @Mapping(target = "usuario1", ignore = true)
-    @Mapping(target = "usuario2", ignore = true)
-    @Mapping(target = "producto1", ignore = true)
-    @Mapping(target = "producto2", ignore = true)
-    @Mapping(target = "mensajes", ignore = true)
     Chat toEntity(ChatDTO chatDTO);
 
     List<ChatDTO> toDTOList(List<Chat> chats);
@@ -44,6 +40,7 @@ public interface ChatMapper {
     default String formatDateTime(LocalDateTime dt) {
         return dt == null ? null : dt.format(FORMATTER);
     }
+
 
     @Named("tipoEstadoIntercambioToString")
     default String tipoEstadoIntercambioToString(TipoEstadoIntercambio estado) {

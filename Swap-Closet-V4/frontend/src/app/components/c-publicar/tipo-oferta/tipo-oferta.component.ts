@@ -28,15 +28,13 @@ export class TipoOfertaComponent  implements OnInit {
   }
 
   onTipoOfertaChange(event: any) {
-    this.tipoOferta = event.detail.value;
+    const valor = event.detail.value as 'intercambio' | 'prestamo';
+    this.tipoOferta = valor;
 
-    if (this.tipoOferta === 'prestamo') {
-      this.formService.updateForm({tipoOferta: 'prestamo'});
-      this.formService.updateForm({precio: this.precio});
-    } else {
-      this.precio = null;
-      this.formService.updateForm({tipoOferta: 'intercambio'});
-      this.formService.updateForm({precio: null});
+    this.formService.updateForm({ tipoOferta: valor });
+
+    if (valor === 'prestamo') {
+      this.formService.updateForm({ precio: this.precio });
     }
   }
 

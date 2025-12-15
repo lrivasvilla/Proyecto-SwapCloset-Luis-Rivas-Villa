@@ -105,6 +105,30 @@ public class ImagenProductoService {
     }
 
     @Transactional
+    public ImagenProductoDTO guardarOActualizarPrincipal(Integer idProducto, String ruta) {
+
+        if (idProducto == null || ruta == null || ruta.isBlank()) {
+            throw new IllegalArgumentException("Datos inválidos");
+        }
+
+        ImagenProducto imagen = imagenProductoRepository
+                .findByProductoIdAndOrden(idProducto, 1)
+                .orElseGet(() -> {
+                    ImagenProducto nueva = new ImagenProducto();
+                    nueva.setOrden(1);
+                    nueva.setProducto(em.getReference(Producto.class, idProducto));
+                    return nueva;
+                });
+
+        // 👉 PISAR la ruta
+        imagen.setUrlImg(ruta);
+
+        ImagenProducto saved = imagenProductoRepository.save(imagen);
+        return imagenProductoMapper.toDTO(saved);
+    }
+
+
+    @Transactional
     public ImagenProductoDTO save(ImagenProductoDTO dto) {
 
         if (!productoRepository.existsById(dto.getIdProducto())) {
@@ -129,16 +153,20 @@ public class ImagenProductoService {
         ImagenProducto existente = imagenProductoRepository.findById(dto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("No existe ImagenProducto con id: " + dto.getId()));
 
-        // actualización parcial (no modifica relación producto por defecto)
-        imagenProductoMapper.updateEntityFromDTO(dto, existente);
-
-        // si se proporciona idProducto, asegurar referencia gestionada
-        if (dto.getIdProducto() != null) {
-            Producto productoRef = em.getReference(Producto.class, dto.getIdProducto());
-            existente.setProducto(productoRef);
+        // Actualización manual de campos permitidos
+        if (dto.getUrlImg() != null) {
+            existente.setUrlImg(dto.getUrlImg());
         }
 
-        ImagenProducto updated = imagenProductoRepository.save(existente);
+        ImagenProducto updated = imagenProductoRepository.saveAndFlush(existente);
+
+//        // Construir el DTO manualmente para evitar problemas de serialización
+//        ImagenProductoDTO result = new ImagenProductoDTO();
+//        result.setId(updated.getId());
+//        result.setUrlImg(updated.getUrlImg());
+//        result.setOrden(updated.getOrden());
+//        result.setIdProducto(updated.getProducto() != null ? updated.getProducto().getId() : null);
+
         return imagenProductoMapper.toDTO(updated);
     }
 

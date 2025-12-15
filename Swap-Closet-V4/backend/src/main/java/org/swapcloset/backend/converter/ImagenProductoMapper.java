@@ -13,19 +13,14 @@ import java.util.List;
 public interface ImagenProductoMapper {
 
     // De entidad a DTO: mapear producto.id -> idProducto
-    @Mapping(target = "idProducto", expression = "java(imagenProducto.getProducto() != null ? imagenProducto.getProducto().getId() : null)")
+    @Mapping(target = "idProducto", source = "producto.id")
     ImagenProductoDTO toDTO(ImagenProducto imagenProducto);
 
     // De DTO a entidad: no mapear la relación producto (la asignas en el servicio)
-
     ImagenProducto toEntity(ImagenProductoDTO imagenProductoDTO);
 
     List<ImagenProductoDTO> toDTOsList(List<ImagenProducto> imagenes);
 
     List<ImagenProducto> toEntitysList(List<ImagenProductoDTO> imagenProductoDTOS);
 
-    // Para update: no tocar la relación producto y no sobrescribir propiedades nulas
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "producto", ignore = true)
-    void updateEntityFromDTO(ImagenProductoDTO dto, @MappingTarget ImagenProducto entidad);
 }

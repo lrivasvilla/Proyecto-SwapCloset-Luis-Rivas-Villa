@@ -35,6 +35,16 @@ public class ImagenProductoController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/img-principal/{id}")
+    public ResponseEntity<String> getImagenPrincipal(@PathVariable Integer id) {
+        String urlImagen = imagenProductoService.getPrimeraImagen(id);
+        if (urlImagen != null) {
+            return ResponseEntity.ok(urlImagen);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     @GetMapping("/by-producto")
     public ResponseEntity<List<ImagenProductoDTO>> getByProducto(@RequestParam Integer productoId) {
         if (productoId == null) return ResponseEntity.badRequest().build();
@@ -87,14 +97,21 @@ public class ImagenProductoController {
         return ResponseEntity.ok(imagenProductoService.findByUrlFragment(fragment));
     }
 
+    @PutMapping("/principal")
+    public ResponseEntity<ImagenProductoDTO> actualizarImagenPrincipal(@RequestBody ImagenProductoDTO dto) {
+        return ResponseEntity.ok(
+                imagenProductoService.guardarOActualizarPrincipal(dto.getIdProducto(), dto.getUrlImg()));
+    }
+
+
     @PostMapping("/create")
     public ResponseEntity<ImagenProductoDTO> create(@Valid @RequestBody ImagenProductoDTO dto) {
         ImagenProductoDTO created = imagenProductoService.save(dto);
         return ResponseEntity.ok(created);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ImagenProductoDTO> update(@PathVariable Integer id, @RequestBody ImagenProductoDTO dto) {
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ImagenProductoDTO> update(@PathVariable Integer id, @Valid @RequestBody ImagenProductoDTO dto) {
         if (id == null || dto == null) return ResponseEntity.badRequest().build();
         if (!imagenProductoService.existsById(id)) return ResponseEntity.notFound().build();
         dto.setId(id);

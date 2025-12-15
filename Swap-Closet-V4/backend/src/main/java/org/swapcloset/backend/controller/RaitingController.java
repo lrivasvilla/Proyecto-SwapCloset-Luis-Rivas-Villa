@@ -79,7 +79,7 @@ public class RaitingController {
     @PutMapping("/{idPuntuado}/{idPuntuador}")
     public ResponseEntity<?> update(@PathVariable Integer idPuntuado,
                                     @PathVariable Integer idPuntuador,
-                                    @RequestBody RaitingDTO dto) {
+                                    @Valid @RequestBody RaitingDTO dto) {
         if (dto == null) return ResponseEntity.badRequest().build();
         dto.setIdPuntuado(idPuntuado);
         dto.setIdPuntuador(idPuntuador);

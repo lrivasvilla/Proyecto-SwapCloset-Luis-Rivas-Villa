@@ -4,7 +4,7 @@ import {ProductoDTO} from "../../../modelos/ProductoDTO";
 import {Observable} from "rxjs";
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
 import {UsuarioService} from "../../../service/usuarioService/usuario.service";
-import {AsyncPipe, NgOptimizedImage} from "@angular/common";
+import {AsyncPipe, DatePipe, NgOptimizedImage} from "@angular/common";
 
 @Component({
     selector: 'app-carta-publicaciones-pasadas-prestado',
@@ -14,7 +14,8 @@ import {AsyncPipe, NgOptimizedImage} from "@angular/common";
   imports: [
     IonicModule,
     NgOptimizedImage,
-    AsyncPipe
+    AsyncPipe,
+    DatePipe
   ]
 })
 export class CartaPublicacionesPasadasPrestadoComponent  implements OnInit {

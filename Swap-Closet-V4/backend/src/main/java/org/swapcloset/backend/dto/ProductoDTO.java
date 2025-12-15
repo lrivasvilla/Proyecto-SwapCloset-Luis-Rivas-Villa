@@ -1,17 +1,19 @@
 package org.swapcloset.backend.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import java.util.List;
 
 @Data
 public class ProductoDTO {
+    //@Null(message = "El id no debe enviarse al crear un producto")
     private Integer id;
     @NotBlank(message = "El tipo no puede estar vacío")
     @NotNull(message = "El tipo no puede ser nulo")
+    @Pattern(regexp = "intercambio|prestamo", message = "El tipo debe ser 'intercambio' o 'prestamo'")
     private String tipo;
+    @Max(value = 150, message = "El precio máximo es 150€")
+    @Min(value = 1, message = "El precio mínimo es 1€")
     private String precio;
     @NotBlank(message = "El título no puede estar vacío")
     @NotNull(message = "El título no puede ser nulo")
@@ -39,6 +41,7 @@ public class ProductoDTO {
     private String color;
     @NotNull(message = "La fecha de devolución no puede ser nula")
     @NotBlank(message = "La fecha de devolución no puede no puede estar vacía")
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}", message = "La fecha de devolución debe tener formato yyyy-MM-dd'T'HH:mm:ss")
     private String fechaDevolucion;
     private String fechaCreacion;
     @NotNull(message = "El idUsuario no puede ser nulo")

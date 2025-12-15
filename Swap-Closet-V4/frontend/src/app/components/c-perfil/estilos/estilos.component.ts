@@ -22,7 +22,7 @@ export class EstilosComponent implements OnInit {
 
   constructor(private actionSheetCtrl: ActionSheetController) {
 
-    // 👇 EFFECT: Se ejecuta cada vez que cambia usuario()
+    // EFFECT: Se ejecuta cada vez que cambia usuario()
     effect(() => {
       const u = this.usuario();
       if (!u?.estilo) return;
