@@ -18,4 +18,8 @@ export class RaitingService {
   getMediaRaitingByUsuario(idUsuario: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/usuario/${idUsuario}/media`);
   }
+
+  guardarRaiting(raiting: RaitingDTO): Observable<RaitingDTO> {
+    return this.http.post<RaitingDTO>(`${this.apiUrl}/create`, raiting);
+  }
 }

@@ -35,37 +35,34 @@ export class BotonPublicarComponent implements OnInit {
 
   ngOnInit() {}
 
-  /**
-   * Proceso principal para validar el formulario, guardar el producto y luego sus imágenes.
-   */
   async publicarPrenda() {
     const form = this.formService.getForm();
 
     try {
-      // 1) Validaciones básicas
+      //Validaciones básicas
       if (!form.titulo || !form.tipoOferta || !form.categoria) {
         return this.mostrarToast('Debes completar título, oferta y categoría');
       }
 
-      // 2) Validación específica de préstamos
+      // Validación específica de préstamos
       if (form.tipoOferta === 'prestamo') {
         if (form.precio == null || form.precio === undefined) {
           return this.mostrarToast('Precio y fecha de devolución obligatorios');
         }
       }
 
-      // 3) Obtener usuario
+      // Obtener usuario
       const usuario = this.authService.getUsuario();
       if (!usuario?.id) {
         await this.mostrarToast('Debes iniciar sesión');
         return this.router.navigate(['/login']);
       }
 
-      // 4) Construir DTO del producto
+      // Construir DTO del producto
       const productoDTO = this.formService.convertirAProductoDTO(usuario.id);
 
 
-      // 5) Guardar el producto en el backend
+      // Guardar el producto en el backend
       const productoCreado = await firstValueFrom(
         this.productoService.guardarProducto(productoDTO)
       );
@@ -74,13 +71,13 @@ export class BotonPublicarComponent implements OnInit {
         throw new Error('El backend no devolvió un ID de producto');
       }
 
-      //6) Guardar imágenes del producto (solo rutas)
+      // Guardar imágenes del producto (solo rutas)
       await this.guardarImagenes(productoCreado.id);
 
-      // 7) Final
+      //  Final
       await this.mostrarToast('Producto publicado correctamente');
       this.formService.resetForm();
-      this.router.navigate(['/home']);
+      await this.router.navigate(['/home']);
 
     } catch (err) {
       console.error('Error durante la publicación del producto:', err);
@@ -89,9 +86,6 @@ export class BotonPublicarComponent implements OnInit {
   }
 
 
-  /**
-   * Convierte las URLs de las fotos a DTOs y las guarda usando el ID del producto.
-   */
   async guardarImagenes(idProducto: number) {
     // 1. Obtener las URLs desde el servicio dedicado a las imágenes
     const fotosUrls: string[] = this.imagenesFormService.getFotos();
@@ -99,29 +93,26 @@ export class BotonPublicarComponent implements OnInit {
     if (!fotosUrls || fotosUrls.length === 0) return;
 
     try {
-      // 2. Iterar sobre las URLs y guardar cada DTO
+      // Iterar sobre las URLs y guardar cada DTO
       for (let i = 0; i < fotosUrls.length; i++) {
 
         const dto: ImagenProductoDTO = {
-          urlImg: fotosUrls[i],   // URL o ruta completa de la imagen
-          orden: i + 1,           // El orden es el índice + 1
-          idProducto: idProducto  // ID del producto recién creado
+          urlImg: fotosUrls[i],
+          orden: i + 1,
+          idProducto: idProducto
         };
 
-        // 3. Llamada al servicio HTTP para guardar la imagen
-        // Nota: Si el servicio devuelve un Observable, 'firstValueFrom' espera la respuesta.
+        // Llamada al servicio HTTP para guardar la imagen
         await firstValueFrom(
           this.imagenService.guardarImagenProducto(dto)
         );
       }
 
-      // 4. Limpiar el array de fotos en el servicio de imágenes después del guardado exitoso
+      // Limpiar el array de fotos en el servicio de imágenes después del guardado exitoso
       this.imagenesFormService.resetFotos();
-      // Opcional: this.imagenesFormService.fotosSeleccionadas = [];
 
     } catch (error) {
       console.error("Error al guardar una imagen asociada:", error);
-      // Propagar el error para que el 'catch' de publicarPrenda lo gestione
       throw new Error('Fallo al guardar una o más imágenes.');
     }
   }

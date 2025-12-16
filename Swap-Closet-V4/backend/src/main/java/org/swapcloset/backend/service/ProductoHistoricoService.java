@@ -50,7 +50,6 @@ public class ProductoHistoricoService {
                 .map(productoHistoricoMapper::toDTO);
     }
 
-    // Devuelve DTOs para que el controller reciba List<ProductoHistoricoDTO>
     @Transactional(readOnly = true)
     public List<ProductoHistoricoDTO> findByProductoId(Integer idProducto) {
         if (idProducto == null) return List.of();

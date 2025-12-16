@@ -1,5 +1,5 @@
-import {Component, inject, Input, input, OnChanges, OnInit} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
+import {Component, inject, Input, input, OnChanges, OnInit, signal} from '@angular/core';
+import {IonicModule, ToastController} from "@ionic/angular";
 import {ProductoDTO} from "../../../modelos/ProductoDTO";
 import {RouterLink, RouterModule} from "@angular/router";
 import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
@@ -8,6 +8,9 @@ import {Observable} from "rxjs";
 import {AsyncPipe, DatePipe, NgClass, NgIf, TitleCasePipe} from "@angular/common";
 import {RaitingService} from "../../../service/raitingService/raiting.service";
 import {CartaProductoDTO} from "../../../modelos/CartaProductoDTO";
+import {AuthService} from "../../../service/authService/auth.service";
+import {FavoritosService} from "../../../service/favoritosService/favoritos.service";
+import {FavoritoDTO} from "../../../modelos/FavoritoDTO";
 
 @Component({
   selector: 'app-carta-home-intercambio',
@@ -21,15 +24,105 @@ import {CartaProductoDTO} from "../../../modelos/CartaProductoDTO";
 export class CartaHomeIntercambioComponent {
 
   producto = input.required<CartaProductoDTO>();
-  esFavorito = false;
 
+  // --- Estado de Favoritos (Usamos signal para reactividad) ---
+  isFavorite = signal<boolean>(false);
+
+  // --- Servicios ---
+  private authService = inject(AuthService);
+  private favoritosService = inject(FavoritosService);
+  private toastCtrl = inject(ToastController);
+
+  // ID del usuario logeado (se establece en ngOnInit)
+  currentUserId: number | null = null;
+
+  ngOnInit(): void {
+    this.currentUserId = this.authService.getUsuario()?.id ?? null;
+    this.checkInitialFavoriteState();
+  }
+
+  /**
+   * Comprueba si el producto ya está en la lista de favoritos del usuario logeado.
+   */
+  checkInitialFavoriteState() {
+    const userId = this.currentUserId;
+    const productId = this.producto()?.productoId; // Obtener el ID del producto desde el input signal
+
+    if (productId && userId) {
+      // Llama al endpoint GET /api/favoritos/exists/{userId}/{productId}
+      this.favoritosService.isFavorito(userId, productId).subscribe({
+        next: (isFav) => {
+          this.isFavorite.set(isFav);
+        },
+        error: (err) => {
+          console.error("Error al chequear favoritos:", err);
+          this.isFavorite.set(false);
+        }
+      });
+    }
+  }
+
+
+  /**
+   * Alterna el estado de favorito (POST para añadir, DELETE para quitar).
+   */
   toggleFavorito() {
-    this.esFavorito = !this.esFavorito;
+    const userId = this.currentUserId;
+    const productId = this.producto()?.productoId;
 
-    // Aquí llamas al backend si quieres guardar el favorito
-    // this.productoService.toggleFavorito(this.producto()?.id, this.esFavorito);
+    // 1. Validaciones
+    if (!userId) {
+      this.mostrarToast('Debes iniciar sesión para añadir favoritos.', 'danger');
+      return;
+    }
 
-    console.log('Favorito:', this.esFavorito);
+    if (!productId) {
+      // Si el producto no tiene ID, no se puede hacer nada
+      return;
+    }
+
+    const isFav = this.isFavorite();
+
+    if (isFav) {
+
+      // QUITAR FAVORITO
+      this.favoritosService.deleteFavorito(userId, productId).subscribe({
+        next: () => {
+          this.isFavorite.set(false);
+          this.mostrarToast('Quitado de favoritos', 'medium');
+        },
+        error: () => {
+          this.mostrarToast('Error al quitar de favoritos.', 'danger');
+        }
+      });
+    } else {
+
+      // AÑADIR FAVORITO
+      const favoritoDto: FavoritoDTO = { idUsuario: userId, idProducto: productId };
+
+      this.favoritosService.saveFavorito(favoritoDto).subscribe({
+        next: () => {
+          this.isFavorite.set(true);
+          this.mostrarToast('Añadido a favoritos', 'danger');
+        },
+        error: (error) => {
+          let mensaje = 'Error al añadir a favoritos.';
+          if (error.status === 400 || error.status === 409) {
+            mensaje = 'El producto ya es tu favorito.';
+          }
+          this.mostrarToast(mensaje, 'danger');
+        }
+      });
+    }
+  }
+
+  async mostrarToast(mensaje: string, color: string) {
+    const toast = await this.toastCtrl.create({
+      message: mensaje,
+      duration: 2000,
+      position: 'top'
+    });
+    await toast.present();
   }
 
 }

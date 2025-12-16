@@ -7,8 +7,8 @@ export interface ChatDTO {
   usuario2Id?: number;
   producto1Id?: number;
   producto2Id?: number;
-  fechaQuedada?: string; // LocalDateTime a string
-  fechaDevolucion?: string; // LocalDateTime a string
+  fechaQuedada?: string;
+  fechaDevolucion?: string;
   activo?: boolean;
   ubicacion?: string;
 

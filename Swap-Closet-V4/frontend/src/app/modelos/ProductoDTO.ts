@@ -17,8 +17,8 @@ export interface ProductoDTO {
   categoria?: string;
   talla?: string;
   color?: string;
-  fechaDevolucion?: string; // LocalDateTime como string
-  fechaCreacion?: string;   // LocalDateTime como string
+  fechaDevolucion?: string;
+  fechaCreacion?: string;
   idUsuario?: number;
   activo?: boolean;
 

@@ -12,11 +12,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ImagenProductoMapper {
 
-    // De entidad a DTO: mapear producto.id -> idProducto
     @Mapping(target = "idProducto", source = "producto.id")
     ImagenProductoDTO toDTO(ImagenProducto imagenProducto);
 
-    // De DTO a entidad: no mapear la relación producto (la asignas en el servicio)
     ImagenProducto toEntity(ImagenProductoDTO imagenProductoDTO);
 
     List<ImagenProductoDTO> toDTOsList(List<ImagenProducto> imagenes);

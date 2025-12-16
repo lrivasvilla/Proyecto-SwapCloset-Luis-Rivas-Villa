@@ -25,7 +25,7 @@ export class PublicacionesActivasComponent  implements OnInit {
   productos = signal<ProductoDTO[]>([]);
   private productoService = inject(ProductoService);
 
-  // ✅ Effect se define como field initializer, no en ngOnInit
+  // Effect se define como field initializer, no en ngOnInit
   private cargarProductosEffect = effect(() => {
     const usr = this.usuario();
     if (usr && typeof usr.id === 'number') {
@@ -33,7 +33,7 @@ export class PublicacionesActivasComponent  implements OnInit {
     }
   });
 
-  // ✅ Usamos directamente el id que recibimos como parámetro
+  // Usamos directamente el id que recibimos como parámetro
   private cargarProductos(id: number) {
     this.productoService.getProductosByUsuario(id).subscribe({
       next: (prods) => this.productos.set(prods),

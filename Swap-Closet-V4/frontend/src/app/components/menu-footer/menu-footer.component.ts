@@ -16,14 +16,13 @@ import {Subscription} from "rxjs";
 export class MenuFooterComponent implements OnInit, OnDestroy {
   usuario: UsuarioDTO | null = null;
   mostrar: boolean = true;
-  rutasSinFooter = ['/login', '/registro']; // Rutas donde no mostrar footer
+  rutasSinFooter = ['/login', '/registro', '/animacion-inicio']; // Rutas donde no mostrar footer
 
   private routerSub!: Subscription;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    // Usuario actual
     this.authService.usuarioActual$.subscribe(user => this.usuario = user);
 
     // Detectar cambios de ruta

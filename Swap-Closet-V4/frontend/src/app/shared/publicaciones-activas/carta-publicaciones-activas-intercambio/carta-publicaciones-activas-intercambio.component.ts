@@ -23,7 +23,7 @@ export class CartaPublicacionesActivasIntercambioComponent  implements OnInit {
   productos = signal<ProductoDTO[]>([]);
   private productoService = inject(ProductoService);
 
-  // ✅ Usamos directamente el id que recibimos como parámetro
+  // Usamos directamente el id que recibimos como parámetro
   private cargarProductos() {
     const id = this.producto.idUsuario!;
     this.productoService.getProductosByUsuario(id).subscribe({

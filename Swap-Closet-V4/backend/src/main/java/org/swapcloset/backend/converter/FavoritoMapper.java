@@ -21,9 +21,5 @@ public interface FavoritoMapper {
 
     List<Favorito> toEntitysList(List<FavoritoDTO> favoritoDTOS);
 
-    /**
-     * Actualiza la entidad existente con los campos no nulos del DTO.
-     * No modifica las relaciones usuario/producto.
-     */
     void updateEntityFromDTO(FavoritoDTO dto, @MappingTarget Favorito entity);
 }

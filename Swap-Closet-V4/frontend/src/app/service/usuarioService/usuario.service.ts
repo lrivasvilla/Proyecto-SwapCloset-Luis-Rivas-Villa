@@ -34,12 +34,10 @@ export class UsuarioService {
     return this.http.post<LoginDTO>(`${this.apiUrl}/login`, { email, password });
   }
 
-  // Obtener estadísticas de un usuario por ID
   getUsuarioEstadisticas(id: number): Observable<UsuarioEstadisticasDTO> {
     return this.http.get<UsuarioEstadisticasDTO>(`${this.apiUrl}/estadisticas/${id}`);
   }
 
-  // Obtener estadísticas de todos los usuarios
   getUsuariosEstadisticasTodos(): Observable<UsuarioEstadisticasDTO[]> {
     return this.http.get<UsuarioEstadisticasDTO[]>(`${this.apiUrl}/estadisticas-all`);
   }

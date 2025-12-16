@@ -1,33 +1,35 @@
 <ion-card class="carta-redonda">
 
-  <!-- Contenedor de imagen y FABs -->
   <div class="contenedor-imagen">
 
-    <!-- FAB: corazón arriba derecha -->
-    <ion-fab class="fab-derecha" (click)="$event.stopPropagation()">
-      <ion-fab-button
-        class="boton-fab"
-        size="small"
-        color="transparent"
-        (click)="toggleFavorito()">
+    @if (producto()?.usuarioId !== currentUserId) {
+      <ion-fab class="fab-derecha" (click)="$event.stopPropagation()">
+        <ion-fab-button
+          class="boton-fab"
+          size="small"
+          color="transparent"
 
-        <ion-icon
-          size="large"
-          [name]="esFavorito ? 'heart' : 'heart-outline'"
-          [color]="esFavorito ? 'danger' : 'light'">
-        </ion-icon>
+          (click)="toggleFavorito()"
 
-      </ion-fab-button>
-    </ion-fab>
+          [disabled]="!producto()?.productoId || !currentUserId">
 
-    <!-- FAB: chip abajo izquierda -->
+          <ion-icon
+            size="large"
+
+            [name]="isFavorite() ? 'heart' : 'heart-outline'"
+            [color]="isFavorite() ? 'danger' : 'light'">
+          </ion-icon>
+
+        </ion-fab-button>
+      </ion-fab>
+    }
+
     <ion-fab class="fab-izquierda">
       <ion-chip [ngClass]="producto()?.tipo === 'intercambio' ? 'chip-rosa' : 'chip-azul'">
         <b>{{(producto()?.tipo | titlecase) || 'Intercambio'}}</b>
       </ion-chip>
     </ion-fab>
 
-    <!-- Imagen -->
     <ion-img [src]="producto()?.urlImgProducto || 'assets/icon/card-media.png'"/>
   </div>
 

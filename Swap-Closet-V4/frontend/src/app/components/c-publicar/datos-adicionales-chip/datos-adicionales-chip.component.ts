@@ -50,7 +50,7 @@ export class DatosAdicionalesChipComponent implements OnInit {
     });
   }
 
-  // --- CATEGORÍA, TALLA y ESTADO ---
+  // CATEGORÍA, TALLA y ESTADO
   seleccionarUnico(tipo: 'categoria' | 'talla' | 'estado', valor: string) {
     if (tipo === 'categoria') {
       this.categoriaSeleccionada = this.categoriaSeleccionada === valor ? null : valor;
@@ -66,7 +66,7 @@ export class DatosAdicionalesChipComponent implements OnInit {
     console.log(`${tipo} seleccionada: ${this.categoriaSeleccionada || this.tallaSeleccionada || this.estadoSeleccionado}`);
   }
 
-  // --- COLOR y ESTILO (múltiple) ---
+  // COLOR y ESTILO (múltiple)
   toggleSeleccion(lista: string[], valor: string, tipo: 'color' | 'estilo') {
     const index = lista.indexOf(valor);
     if (index > -1) {
@@ -85,7 +85,7 @@ export class DatosAdicionalesChipComponent implements OnInit {
     }
   }
 
-  // --- Menú de añadir nuevas opciones ---
+  //  Menú de añadir nuevas opciones
   async abrirMenuExtra(tipo: 'categoria' | 'color' | 'estilo') {
     let opciones: string[] = [];
     if (tipo === 'categoria') opciones = this.categoriasExtra;
@@ -122,7 +122,7 @@ export class DatosAdicionalesChipComponent implements OnInit {
     await actionSheet.present();
   }
 
-  // --- Actualiza tallas según categoría ---
+  // Actualiza tallas según categoría
   actualizarTallas() {
     if (this.categoriaSeleccionada === 'Pantalón' || this.categoriaSeleccionada === 'Calzado') {
       this.tallas = [...this.tallasNumero];

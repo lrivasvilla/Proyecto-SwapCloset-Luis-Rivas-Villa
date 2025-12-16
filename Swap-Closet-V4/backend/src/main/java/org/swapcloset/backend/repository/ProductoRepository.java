@@ -41,7 +41,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
 
     List<Producto> findByFechaCreacionAfter(LocalDateTime desde);
 
-
+    List<Producto> findByActivoTrueOrderByIdDesc();
     List<Producto> findByCategoria(String categoria);
     List<Producto> findByMarca(String marca);
     List<Producto> findByTalla(String talla);
