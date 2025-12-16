@@ -53,9 +53,23 @@
     </ion-row>
 
     <div class="caja-boton">
-      <ion-button fill="clear" expand="block" class="btn-publicar">
-        <b>Seguir</b>
-        <ion-icon class="margen-left" slot="end" name="person-add-outline"/>
+      <ion-button
+        fill="clear"
+        expand="block"
+        class="btn-publicar"
+        (click)="toggleFollow()"
+
+        [className]="isFollowing() ? 'btn-seguido' : 'btn-publicar'"
+
+        [disabled]="isOwnProfile()"
+      >
+        <b>{{ isFollowing() ? 'Dejar de seguir' : 'Seguir' }}</b>
+
+        <ion-icon
+          class="margen-left"
+          slot="end"
+          [name]="isFollowing() ? 'person-remove-outline' : 'person-add-outline'"
+        />
       </ion-button>
     </div>
 

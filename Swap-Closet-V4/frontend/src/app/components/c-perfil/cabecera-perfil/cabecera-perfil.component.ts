@@ -23,7 +23,14 @@ export class CabeceraPerfilComponent{
   private usuarioService = inject(UsuarioService);
   private authService = inject(AuthService);
 
-  constructor(private toastCtrl: ToastController) {}
+  constructor(private toastCtrl: ToastController) {
+    effect(() => {
+        const currentUsuario = this.usuario();
+        if (currentUsuario) {
+            console.log("Usuario data received:", currentUsuario.raiting);
+        }
+    });
+  }
 
   async cambiarFoto() {
     const modal = await this.modalCtrl.create({

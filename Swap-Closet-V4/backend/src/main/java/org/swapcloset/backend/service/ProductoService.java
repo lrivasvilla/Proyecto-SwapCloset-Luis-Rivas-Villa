@@ -97,7 +97,7 @@ public class ProductoService {
 
     @Transactional
     public List<CartaProductoDTO> getAllCartasProductosDTOActivos() {
-        return productoRepository.findAll()
+        return productoRepository.findByActivoTrueOrderByIdDesc()
                 .stream()
                 .map(producto -> getCartaProductoDTOidProducto(producto.getId()))
                 .collect(Collectors.toList());

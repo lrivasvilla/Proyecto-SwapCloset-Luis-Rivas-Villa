@@ -14,6 +14,30 @@
         >
           <b>{{ producto?.tipo }}</b>
         </ion-chip>
+
+        @if (usuario?.id !== idUsuarioLogueado) {
+          <ion-fab
+            horizontal="end"
+            vertical="top"
+            class="fab-favorito-anuncio"
+            (click)="$event.stopPropagation()">
+            <ion-fab-button
+              size="small"
+              color="transparent"
+              (click)="toggleFavorite()"
+
+              [disabled]="!producto?.id || !idUsuarioLogueado"
+            >
+              <ion-icon
+                size="large"
+                [name]="isFavorite() ? 'heart' : 'heart-outline'"
+                [color]="isFavorite() ? 'danger' : 'light'"
+              >
+              </ion-icon>
+            </ion-fab-button>
+          </ion-fab>
+        }
+
       </div>
     </ion-row>
 
@@ -88,14 +112,11 @@
         <div class="fecha-section">
           <ion-icon name="calendar-sharp" class="icon"></ion-icon>
           <p class="fecha-texto">Disponible hasta el: </p>
-          <p> </p>
-          <p class="fecha-date margen-left"><strong> {{ producto?.fechaDevolucion | date:'dd/MM/yyyy'  }}</strong></p>
+          <p class="fecha-date margen-left"><strong> {{ producto?.fechaDevolucion | date:'dd/MM/yyyy' }}</strong></p>
         </div>
 
-        <!-- Sección del usuario con clases nuevas -->
         <div class="usuario-card-container">
 
-          <!-- Fila superior: Avatar a la izquierda + Nombre y rating al lado -->
           <ion-row class="usuario-card-top-row">
             <div size="3" class="usuario-card-avatar-col">
               <ion-img [src]="usuario?.urlImg" class="usuario-card-avatar"></ion-img>
@@ -114,7 +135,6 @@
 
           </ion-row>
 
-          <!-- Fila inferior: Botón Ver perfil centrado -->
           <ion-row class="usuario-card-bottom-row">
             <ion-col class="usuario-card-button-col">
               @if (usuario?.id !== idUsuarioLogueado) {

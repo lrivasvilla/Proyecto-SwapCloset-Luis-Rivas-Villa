@@ -12,15 +12,12 @@ import java.util.List;
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Integer> {
 
-    // Todos los chats en los que participa un usuario
     @Query("select c from Chat c where c.usuario1 = :usuario or c.usuario2 = :usuario")
     List<Chat> findAllByUsuario(@Param("usuario") Usuario usuario);
 
-    // Conteo de intercambios (completado y producto2 != null)
     @Query("SELECT COUNT(c) FROM Chat c WHERE (c.usuario1.id = :userId OR c.usuario2.id = :userId) AND c.completado = true AND c.producto2 IS NOT NULL")
     Integer getCantidadIntercambios(@Param("userId") Integer userId);
 
-    // Conteo de préstamos (completado y producto2 == null)
     @Query("SELECT COUNT(c) FROM Chat c WHERE (c.usuario1.id = :userId OR c.usuario2.id = :userId) AND c.completado = true AND c.producto2 IS NULL")
     Integer getCantidadPrestamos(@Param("userId") Integer userId);
 

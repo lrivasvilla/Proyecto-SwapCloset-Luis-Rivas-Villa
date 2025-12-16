@@ -28,4 +28,16 @@ export class FavoritosService {
     return this.http.get<number>(`${this.apiUrl}/usuario/${idUsuario}/count`);
   }
 
+  saveFavorito(favoritoDto: FavoritoDTO): Observable<FavoritoDTO> {
+    return this.http.post<FavoritoDTO>(this.apiUrl, favoritoDto);
+  }
+
+  deleteFavorito(idUsuario: number, idProducto: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${idUsuario}/${idProducto}`);
+  }
+
+  isFavorito(idUsuario: number, idProducto: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/exists/${idUsuario}/${idProducto}`);
+  }
+
 }

@@ -15,28 +15,20 @@ public interface ProductoHistoricoRepository extends JpaRepository<ProductoHisto
     List<ProductoHistorico> findByProducto_Id(Integer id);
     List<ProductoHistorico> findByUsuario_Id(Integer usuarioId);
     Page<ProductoHistorico> findByUsuario_Id(Integer usuarioId, Pageable pageable);
-
     List<ProductoHistorico> findByTipo(TipoProducto tipo);
     Page<ProductoHistorico> findByTipo(TipoProducto tipo, Pageable pageable);
-
     List<ProductoHistorico> findByAccion(AccionHistorico accion);
     Page<ProductoHistorico> findByAccion(AccionHistorico accion, Pageable pageable);
-
     List<ProductoHistorico> findByTituloContainingIgnoreCase(String titulo);
     List<ProductoHistorico> findByEstiloContainingIgnoreCase(String estilo);
     List<ProductoHistorico> findByCategoria(String categoria);
     List<ProductoHistorico> findByMarca(String marca);
     List<ProductoHistorico> findByTalla(String talla);
     List<ProductoHistorico> findByColorIgnoreCase(String color);
-
     List<ProductoHistorico> findByPrecioBetween(BigDecimal precioMin, BigDecimal precioMax);
-
     List<ProductoHistorico> findByFechaDevolucionIsNull();
     List<ProductoHistorico> findByFechaDevolucionBefore(LocalDateTime fecha);
-
     List<ProductoHistorico> findByFechaCreacionBefore(LocalDateTime fecha);
     List<ProductoHistorico> findByFechaCreacionAfter(LocalDateTime fecha);
-
-    // Útil para comprobar entradas históricas concretas
     List<ProductoHistorico> findByProducto_IdAndAccion(Integer idProducto, AccionHistorico accion);
 }

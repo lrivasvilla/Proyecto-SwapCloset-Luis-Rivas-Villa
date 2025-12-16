@@ -2,8 +2,8 @@ import {ImagenProductoDTO} from "./ImagenProductoDTO";
 
 export interface ProductoForm {
 
-  tipoOferta: 'intercambio' | 'prestamo'; // Tipo de oferta
-  precio?: number | null;                 // Solo si es préstamo
+  tipoOferta: 'intercambio' | 'prestamo';
+  precio?: number | null;
   titulo?: string;
   estilo?: string;
   descripcion?: string;

@@ -32,6 +32,19 @@
   overflow: hidden;
 }
 
+.btn-seguido {
+  font-size: 2.5vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  height: 6vh;
+  width: 90%;
+  --background: linear-gradient(360deg, #cacaca, #c8c8c8);
+  --color: #fff;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+  --border-radius: 16px;
+  border-radius: 16px;
+  overflow: hidden;
+}
 
 
 .perfil-foto-container {

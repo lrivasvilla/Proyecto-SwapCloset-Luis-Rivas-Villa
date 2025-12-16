@@ -24,7 +24,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-// Lombok genera el constructor con chatRepository, chatMapper, usuarioRepository, productoRepository
 @RequiredArgsConstructor
 public class ChatService {
 

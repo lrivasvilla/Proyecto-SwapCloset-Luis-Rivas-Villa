@@ -22,7 +22,7 @@ export class ImagenFormService {
     return this.imagenesDisponibles;
   }
 
-  public fotosSeleccionadas: string[] = []; // Se mantiene pública para el acceso desde componentes (SubirFotoComponent)
+  public fotosSeleccionadas: string[] = [];
 
   agregarFoto(enlace : string) {
     this.fotosSeleccionadas.push(enlace);
@@ -38,6 +38,10 @@ export class ImagenFormService {
     console.log('Fotos reseteadas en ImagenFormService.');
   }
 
+  public setImagenUnica(ruta: string) {
+    this.fotosSeleccionadas = [ruta];
+    console.log('Imagen única establecida:', ruta);
+  }
   generarImagenesDTO(idProducto: number): ImagenProductoDTO[] {
     return this.fotosSeleccionadas.map((ruta, index) => ({
       urlImg: ruta,

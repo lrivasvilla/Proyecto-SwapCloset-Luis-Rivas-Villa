@@ -17,6 +17,6 @@ import {ProductoDTO} from "../../modelos/ProductoDTO";
 })
 export class CartaHorizontalFavComponent {
 
-  @Input() producto!: ProductoDTO; // Asegúrate de usar el mismo nombre que en el padre
+  @Input() producto!: ProductoDTO;
 
 }
