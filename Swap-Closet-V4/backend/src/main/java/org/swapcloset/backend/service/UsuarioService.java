@@ -132,9 +132,9 @@ public class UsuarioService {
     public Optional<UsuarioEstadisticaDTO> obtenerUsuarioConMasIntercambios() {
         List<UsuarioEstadisticaDTO> todos = obtenerTodosUsuariosEstadisticas();
 
-        return Optional.ofNullable(todos.stream()
-                .max(Comparator.comparing(UsuarioEstadisticaDTO::getIntercambios))
-                .orElse(null)); // null si no hay usuarios
+        return todos.stream()
+                .filter(u -> u.getIntercambios() != null && u.getIntercambios() > 0)
+                .max(Comparator.comparingInt(UsuarioEstadisticaDTO::getIntercambios));
     }
 
     @Transactional(readOnly = true)

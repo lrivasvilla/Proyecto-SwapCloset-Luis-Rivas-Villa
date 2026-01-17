@@ -72,9 +72,17 @@
             <optional>true</optional>
         </dependency>
 
+        <!--TEST DEPENDENCIES-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- DEPENDENCY PARA H2 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -90,9 +98,19 @@
             <version>${mapstruct.version}</version>
         </dependency>
 
+        <!-- TESTING -->
+
         <dependency>
             <groupId>org.springframework.modulith</groupId>
             <artifactId>spring-modulith-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- H2 -->
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
 

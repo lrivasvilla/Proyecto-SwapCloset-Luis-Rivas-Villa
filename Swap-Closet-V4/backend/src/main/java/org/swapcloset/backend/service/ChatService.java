@@ -58,6 +58,11 @@ public class ChatService {
         return chatRepository.getCantidadTotalIntercambiosIdUsuario(id);
     }
 
+    @Transactional
+    public Integer getCantidadTotalIntercambiosPorProducto(Integer id) {
+        return chatRepository.getCantidadTotalIntercambiosIdProducto(id);
+    }
+
     @Transactional(readOnly = true)
     public Optional<ChatDTO> findById(Integer id) {
         return chatRepository.findById(id).map(chatMapper::toDTO);

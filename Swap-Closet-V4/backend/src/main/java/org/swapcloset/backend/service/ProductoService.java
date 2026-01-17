@@ -132,7 +132,7 @@ public class ProductoService {
         dto.setActivo(productoDTO.getActivo());
 
         // Agregamos el campo específico de intercambio
-        dto.setIntercambios(chatService.getCantidadTotalIntercambios(idProducto));
+        dto.setIntercambios(chatService.getCantidadTotalIntercambiosPorProducto(idProducto));
 
         return dto;
     }
@@ -159,7 +159,8 @@ public class ProductoService {
     public List<CartaProductoIntercambioDTO> getTop5ProductosConMasIntercambios() {
         return productoRepository.findAll()
                 .stream()
-                .map(producto -> getCartaProductoIntercambioDTOidProducto(producto.getId()))
+                .map(p -> getCartaProductoIntercambioDTOidProducto(p.getId()))
+                .filter(dto -> dto.getIntercambios() != null && dto.getIntercambios() > 0)
                 .sorted(Comparator.comparingInt(CartaProductoIntercambioDTO::getIntercambios).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
@@ -261,6 +262,21 @@ public class ProductoService {
             );
         }
 
+        if((productoDTO.getTipo().equals("intercambio") || productoDTO.getTipo().equals("Intercambio")) && productoDTO.getPrecio() != null){
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Los productos de tipo Intercambio no deben tener precio"
+            );
+        }
+
+        if((productoDTO.getTipo().equals("prestamo") || productoDTO.getTipo().equals("Préstamo") || productoDTO.getTipo().equals("Prestamo")) && productoDTO.getPrecio() == null){
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Los productos de tipo Préstamo deben tener precio"
+            );
+        }
+
+
         Producto entidad = productoMapper.toEntity(productoDTO);
 
         Usuario usuarioRef = em.getReference(
@@ -294,6 +310,27 @@ public class ProductoService {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "No existe el id de usuario"
+            );
+        }
+
+        if((productoDTO.getTipo().equals("intercambio") || productoDTO.getTipo().equals("Intercambio")) && productoDTO.getPrecio() != null){
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Los productos de tipo Intercambio no deben tener precio"
+            );
+        }
+
+        if((productoDTO.getTipo().equals("prestamo") || productoDTO.getTipo().equals("Préstamo") || productoDTO.getTipo().equals("Prestamo")) && productoDTO.getPrecio() == null){
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Los productos de tipo Préstamo deben tener precio"
+            );
+        }
+
+        if(!productoDTO.getTipo().toUpperCase().equals("INTERCAMBIO") || !productoDTO.getTipo().toUpperCase().equals("PRESTAMO") || !productoDTO.getTipo().toUpperCase().equals("PRÉSTAMO")){
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El tipo de producto debe ser 'Intercambio' o 'Préstamo'"
             );
         }
 

@@ -18,33 +18,26 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ChatMapper {
+    DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-    DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    @Mapping(source = "usuario1.id", target = "usuario1Id")
-    @Mapping(source = "usuario2.id", target = "usuario2Id")
-    @Mapping(source = "producto1.id", target = "producto1Id")
-    @Mapping(source = "producto2.id", target = "producto2Id")
     @Mapping(source = "fechaCreacion", target = "fechaCreacion", qualifiedByName = "formatDateTime")
     @Mapping(source = "fechaQuedada", target = "fechaQuedada", qualifiedByName = "formatDateTime")
     @Mapping(source = "fechaDevolucion", target = "fechaDevolucion", qualifiedByName = "formatDateTime")
-    @Mapping(source = "estadoIntercambio", target = "estadoIntercambio", qualifiedByName = "tipoEstadoIntercambioToString")
     ChatDTO toDTO(Chat chat);
 
+    @Mapping(source = "fechaCreacion", target = "fechaCreacion", qualifiedByName = "parseDateTime")
+    @Mapping(source = "fechaQuedada", target = "fechaQuedada", qualifiedByName = "parseDateTime")
+    @Mapping(source = "fechaDevolucion", target = "fechaDevolucion", qualifiedByName = "parseDateTime")
     Chat toEntity(ChatDTO chatDTO);
-
-    List<ChatDTO> toDTOList(List<Chat> chats);
-
-    List<Chat> toEntityList(List<ChatDTO> chatDTOS);
 
     @Named("formatDateTime")
     default String formatDateTime(LocalDateTime dt) {
-        return dt == null ? null : dt.format(FORMATTER);
+        return dt == null ? null : dt.format(FORMATTER); // -> 2020-12-03T18:00:00
     }
 
-
-    @Named("tipoEstadoIntercambioToString")
-    default String tipoEstadoIntercambioToString(TipoEstadoIntercambio estado) {
-        return estado != null ? estado.name() : null;
+    @Named("parseDateTime")
+    default LocalDateTime parseDateTime(String dt) {
+        return dt == null ? null : LocalDateTime.parse(dt, FORMATTER);
     }
 
 

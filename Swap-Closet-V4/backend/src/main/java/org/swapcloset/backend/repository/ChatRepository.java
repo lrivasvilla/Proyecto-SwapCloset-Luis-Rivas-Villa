@@ -27,4 +27,5 @@ public interface ChatRepository extends JpaRepository<Chat, Integer> {
     @Query("SELECT COUNT(c) FROM Chat c WHERE (c.producto1.id = :prodId OR c.producto2.id = :prodId) AND c.completado = true")
     Integer getCantidadTotalIntercambiosIdProducto(@Param("prodId") Integer prodId);
 
+
 }

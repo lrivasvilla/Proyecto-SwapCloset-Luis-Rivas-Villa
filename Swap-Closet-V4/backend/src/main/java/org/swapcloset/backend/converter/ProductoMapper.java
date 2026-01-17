@@ -36,6 +36,22 @@ public interface ProductoMapper {
 //    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 //    void updateEntityFromDTO(ProductoDTO dto, @MappingTarget Producto entidad);
 
+    @Named("tipoProductoToString")
+    default String tipoProductoToString(TipoProducto tipo) {
+        return tipo != null ? tipo.getTipo() : null;
+    }
+
+    @Named("stringToTipoProducto")
+    default TipoProducto stringToTipoProducto(String value) {
+        if (value == null) return null;
+
+        return switch (value.toLowerCase()) {
+            case "intercambio" -> TipoProducto.intercambio;
+            case "préstamo", "prestamo" -> TipoProducto.prestamo;
+            default -> null;
+        };
+    }
+
     @Named("convertStringToBigDecimal")
     default BigDecimal convertStringToBigDecimal(String value) {
         if (value == null || value.isBlank()) {
@@ -57,22 +73,6 @@ public interface ProductoMapper {
         }
         // eliminamos ceros a la derecha y obtenemos la representación "plana"
         return value.stripTrailingZeros().toPlainString();
-    }
-
-    @Named("tipoProductoToString")
-    default String tipoProductoToString(TipoProducto tipo) {
-        return tipo != null ? tipo.getTipo() : null;
-    }
-
-    @Named("stringToTipoProducto")
-    default TipoProducto stringToTipoProducto(String value) {
-        if (value == null) return null;
-
-        return switch (value.toLowerCase()) {
-            case "intercambio" -> TipoProducto.intercambio;
-            case "préstamo", "prestamo" -> TipoProducto.prestamo;
-            default -> null;
-        };
     }
 
     @Named("stringToLocalDateTime")

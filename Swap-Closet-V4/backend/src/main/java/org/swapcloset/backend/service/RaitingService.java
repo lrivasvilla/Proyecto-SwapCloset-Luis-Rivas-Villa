@@ -84,6 +84,16 @@ public class RaitingService {
                     "Usuario puntuador no encontrado con ID: " + dto.getIdPuntuador());
         }
 
+        if(dto.getPuntuacion()>5 || dto.getPuntuacion()<0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La puntuación debe estar entre 0 y 5");
+        }
+
+        if(dto.getIdPuntuado() == dto.getIdPuntuador()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Un usuario no puede puntuarse a sí mismo");
+        }
+
         Raiting entity = new Raiting();
         entity.setId(new RaitingId(dto.getIdPuntuado(), dto.getIdPuntuador()));
 
