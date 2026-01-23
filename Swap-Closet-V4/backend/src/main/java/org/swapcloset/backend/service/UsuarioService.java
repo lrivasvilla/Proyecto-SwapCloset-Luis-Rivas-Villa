@@ -2,6 +2,7 @@ package org.swapcloset.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -130,11 +131,17 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public Optional<UsuarioEstadisticaDTO> obtenerUsuarioConMasIntercambios() {
-        List<UsuarioEstadisticaDTO> todos = obtenerTodosUsuariosEstadisticas();
 
-        return todos.stream()
-                .filter(u -> u.getIntercambios() != null && u.getIntercambios() > 0)
-                .max(Comparator.comparingInt(UsuarioEstadisticaDTO::getIntercambios));
+        List<Integer> ids = usuarioRepository.findTopUsuarioIdConMasIntercambios(PageRequest.of(0, 1));
+
+        if (ids.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Integer idTop = ids.get(0);
+
+        // Reutilizas el método que ya arma todo el DTO completo
+        return Optional.of(obtenerUsuarioEstadisticas(idTop));
     }
 
     @Transactional(readOnly = true)

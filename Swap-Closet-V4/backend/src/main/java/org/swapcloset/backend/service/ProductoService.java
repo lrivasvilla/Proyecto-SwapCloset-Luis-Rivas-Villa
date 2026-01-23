@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -157,13 +158,7 @@ public class ProductoService {
 
     @Transactional(readOnly = true)
     public List<CartaProductoIntercambioDTO> getTop5ProductosConMasIntercambios() {
-        return productoRepository.findAll()
-                .stream()
-                .map(p -> getCartaProductoIntercambioDTOidProducto(p.getId()))
-                .filter(dto -> dto.getIntercambios() != null && dto.getIntercambios() > 0)
-                .sorted(Comparator.comparingInt(CartaProductoIntercambioDTO::getIntercambios).reversed())
-                .limit(5)
-                .collect(Collectors.toList());
+        return productoRepository.topProductosConMasIntercambios(PageRequest.of(0, 5));
     }
 
     @Transactional(readOnly = true)
@@ -327,7 +322,7 @@ public class ProductoService {
             );
         }
 
-        if(!productoDTO.getTipo().toUpperCase().equals("INTERCAMBIO") || !productoDTO.getTipo().toUpperCase().equals("PRESTAMO") || !productoDTO.getTipo().toUpperCase().equals("PRÉSTAMO")){
+        if(!productoDTO.getTipo().equalsIgnoreCase("intercambio") && !productoDTO.getTipo().equalsIgnoreCase("prestamo") && !productoDTO.getTipo().equalsIgnoreCase("préstamo")){
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "El tipo de producto debe ser 'Intercambio' o 'Préstamo'"

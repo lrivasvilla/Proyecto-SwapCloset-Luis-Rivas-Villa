@@ -29,4 +29,15 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     @Query(value = "SELECT u.* FROM usuario u LEFT JOIN usuario_seguidores us ON u.id = us.seguido_id GROUP BY u.id ORDER BY COUNT(us.seguidor_id) DESC LIMIT 1", nativeQuery = true)
     Optional<Usuario> getUsuarioConMasSeguidoresNative();
+
+    @Query("""
+        select u.id
+        from Usuario u
+        join Chat c on (c.usuario1.id = u.id or c.usuario2.id = u.id)
+        where c.completado = true
+        group by u.id
+        having count(c) > 0
+        order by count(c) desc
+    """)
+    List<Integer> findTopUsuarioIdConMasIntercambios(org.springframework.data.domain.Pageable pageable);
 }
