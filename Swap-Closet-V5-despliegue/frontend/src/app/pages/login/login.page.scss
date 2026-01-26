@@ -1,0 +1,150 @@
+.fondo {
+  --background: linear-gradient(125deg, #b0d2ff 0%, #f45097 100%);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contenedor-central {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.contenedor-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2vh;
+}
+
+.logo {
+  width: 10rem;
+  height: 10rem;
+}
+
+.subtitulo {
+  color: #fff;
+  margin-top: 1rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.card-login {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
+  width: 90%;
+  max-width: 400px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.titulo {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.tab {
+  border: none;
+  background: #f0f0f0;
+  color: #777;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  margin: 0 0.3rem;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.tab.activo {
+  background: #fff;
+  color: #f45097;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.input-item {
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  --background: #f9f9f9;
+  font-size: 0.9rem;
+}
+
+.acciones {
+  text-align: left;
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  color: #444;
+}
+
+.olvide {
+  color: #f45097;
+  text-decoration: none;
+  margin-right: auto;
+}
+
+.checkbox {
+  margin-left: 5px;
+  margin-right: 6px;
+  --size: 18px;
+}
+
+.btn-iniciar {
+  --background: linear-gradient(90deg, #f45097, #b0d2ff);
+  --border-radius: 12px;
+  height: 45px;
+  font-weight: 600;
+  color:white;
+}
+
+.terminos {
+  font-size: 0.7rem;
+  margin-top: 0.8rem;
+  color: #666;
+}
+
+.terminos a {
+  color: #f45097;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.google-box {
+  margin-top: 1.2rem;
+}
+
+.o {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.8rem;
+}
+
+.btn-google {
+  --border-color: #ccc;
+  color: #444;
+  font-weight: 500;
+  border: #717171 1px solid;
+  border-radius: 15px;
+  --border-radius: 12px;
+
+}
+
+.google-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
