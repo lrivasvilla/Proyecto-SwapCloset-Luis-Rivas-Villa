@@ -4,13 +4,14 @@ import {Observable} from "rxjs";
 import {FavoritoDTO} from "../../modelos/FavoritoDTO";
 import {ProductoDTO} from "../../modelos/ProductoDTO";
 import {CartaProductoDTO} from "../../modelos/CartaProductoDTO";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritosService {
   private http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/favoritos';
+  private readonly apiUrl = environment.apiUrl + '/api/favoritos';
 
   getFavorito(id: number): Observable<FavoritoDTO> {
     return this.http.get<FavoritoDTO>(`${this.apiUrl}/${id}`)

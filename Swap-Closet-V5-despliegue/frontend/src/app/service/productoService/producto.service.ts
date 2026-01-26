@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ProductoDTO} from "../../modelos/ProductoDTO";
 import {CartaProductoDTO} from "../../modelos/CartaProductoDTO";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import {CartaProductoDTO} from "../../modelos/CartaProductoDTO";
 export class ProductoService {
 
   private http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/productos'; // ✅ URL completa
+  private readonly apiUrl = environment.apiUrl + '/api/productos'; //
 
   getProducto(id: number): Observable<ProductoDTO> {
     return this.http.get<ProductoDTO>(`${this.apiUrl}/${id}`)

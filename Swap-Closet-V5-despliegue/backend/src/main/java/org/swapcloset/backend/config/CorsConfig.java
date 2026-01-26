@@ -18,6 +18,7 @@ public class CorsConfig implements WebMvcConfigurer {
                         "capacitor://localhost",
                         "https://*.onrender.com"
                 )
+
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization", "Content-Type", "Location")

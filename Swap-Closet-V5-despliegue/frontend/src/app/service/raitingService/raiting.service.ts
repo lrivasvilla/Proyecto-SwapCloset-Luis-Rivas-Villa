@@ -3,13 +3,14 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {UsuarioDTO} from "../../modelos/UsuarioDTO";
 import {RaitingDTO} from "../../modelos/RaitingDTO";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RaitingService {
   private http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/raitings'; // ✅ URL completa
+  private readonly apiUrl = environment.apiUrl + '/api/raitings'; // ✅ URL completa
 
   getRaiting(id: number): Observable<RaitingDTO> {
     return this.http.get<RaitingDTO>(`${this.apiUrl}/${id}`)

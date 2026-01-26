@@ -6,6 +6,7 @@ import {ProductoDTO} from "../../modelos/ProductoDTO";
 import {LoginDTO} from "../../modelos/LoginDTO";
 import {UsuarioEstadisticasDTO} from "../../modelos/UsuarioEstadisticasDTO";
 import {CartaUsuarioDTO} from "../../modelos/CartaUsuarioDTO";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import {CartaUsuarioDTO} from "../../modelos/CartaUsuarioDTO";
 export class UsuarioService {
 
   private http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/usuarios'; // ✅ URL completa
+  private readonly apiUrl = environment.apiUrl + '/api/usuarios';
 
   getUsuario(id: number): Observable<UsuarioDTO> {
     return this.http.get<UsuarioDTO>(`${this.apiUrl}/${id}`)
