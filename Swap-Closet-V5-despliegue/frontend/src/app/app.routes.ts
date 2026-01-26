@@ -19,7 +19,7 @@ import {PerfilOtroPage} from "./pages/perfil-otro/perfil-otro.page";
 
 export const routes: Routes = [
 
-  {path: '', redirectTo: 'login', pathMatch: 'full',},
+  {path: '', redirectTo: 'animacion-inicio', pathMatch: 'full',},
   {path: 'home', component: HomePage},
   {path: 'explorar', component: ExplorarPage},
   {path: 'publicar', component: PublicarPage},
