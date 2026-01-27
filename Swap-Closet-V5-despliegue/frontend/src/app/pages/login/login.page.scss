@@ -1,23 +1,25 @@
-:host {
-  display: block;
-}
+/* IMPORTANTE:
+   - ion-content NO debe ser flex.
+   - El centrado se hace en .contenedor-central.
+*/
 
-/* ion-content DEBE quedarse en bloque */
 ion-content.fondo {
   --background: linear-gradient(125deg, #b0d2ff 0%, #f45097 100%);
 }
 
-/* El centrado se hace en un wrapper interno */
+/* Wrapper central */
 .contenedor-central {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 24px;
+  justify-content: center;
+  width: 100%;
+  padding: 24px 16px;
   box-sizing: border-box;
 }
 
+/* Logo */
 .contenedor-logo {
   display: flex;
   flex-direction: column;
@@ -28,6 +30,7 @@ ion-content.fondo {
 .logo {
   width: 10rem;
   height: 10rem;
+  display: block;
 }
 
 .subtitulo {
@@ -37,22 +40,25 @@ ion-content.fondo {
   text-align: center;
 }
 
+/* Card */
 .card-login {
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
-  width: 100%;
+  width: 90%;
   max-width: 400px;
   padding: 2rem 1.5rem;
   text-align: center;
 }
 
+/* Título */
 .titulo {
   font-size: 1.2rem;
   color: #333;
   margin-bottom: 1rem;
 }
 
+/* Tabs */
 .tabs {
   display: flex;
   justify-content: center;
@@ -76,27 +82,61 @@ ion-content.fondo {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* ion-item NO se toca con display */
-ion-item.input-item {
-  --background: #f9f9f9;
-  border-radius: 10px;
-  margin-bottom: 1rem;
+/* Lista del formulario (evita estilos raros por defecto) */
+.lista-form {
+  background: transparent;
+  padding: 0;
+  margin: 0 0 12px 0;
 }
 
+/* Inputs */
+ion-item.input-item {
+  --background: #f9f9f9;
+  --border-radius: 10px;
+  --min-height: 48px;
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
+
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Asegura que el input nativo se vea */
+ion-input::part(native) {
+  color: #111;
+}
+
+/* Acciones */
 .acciones {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  text-align: left;
   font-size: 0.8rem;
   margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
   color: #444;
 }
 
 .olvide {
   color: #f45097;
   text-decoration: none;
+  margin-right: auto;
 }
 
+/* Recordar */
+.recordar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.checkbox {
+  --size: 18px;
+}
+
+/* Botón iniciar */
 .btn-iniciar {
   --background: linear-gradient(90deg, #f45097, #b0d2ff);
   --border-radius: 12px;
@@ -105,15 +145,25 @@ ion-item.input-item {
   color: white;
 }
 
+/* Google */
 .google-box {
   margin-top: 1.2rem;
 }
 
+.o {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.8rem;
+}
+
 .btn-google {
   --border-color: #ccc;
-  color: #444;
-  border: 1px solid #717171;
   --border-radius: 12px;
+
+  color: #444;
+  font-weight: 500;
+  border: #717171 1px solid;
+  border-radius: 15px;
 }
 
 .google-icon {

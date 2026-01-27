@@ -33,38 +33,36 @@
 
       <!-- FORMULARIO LOGIN -->
       <ng-container *ngIf="!modoRegistro">
-        <ion-item class="input-item" lines="none">
-          <ion-icon name="mail-outline" slot="start" aria-hidden="true"></ion-icon>
-          <ion-input
-            type="email"
-            inputmode="email"
-            autocomplete="email"
-            placeholder="Correo electrónico"
-            aria-label="Correo electrónico"
-            [(ngModel)]="correoSign"
-          ></ion-input>
-        </ion-item>
+        <ion-list lines="none" class="lista-form">
+          <ion-item class="input-item">
+            <ion-icon name="mail-outline" slot="start" aria-hidden="true"></ion-icon>
+            <ion-input
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              placeholder="Correo electrónico"
+              [(ngModel)]="correoSign"
+            ></ion-input>
+          </ion-item>
 
-        <ion-item class="input-item" lines="none">
-          <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
-          <ion-input
-            type="password"
-            autocomplete="current-password"
-            placeholder="Contraseña"
-            aria-label="Contraseña"
-            [(ngModel)]="passwordSign"
-          ></ion-input>
-        </ion-item>
+          <ion-item class="input-item">
+            <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
+            <ion-input
+              type="password"
+              autocomplete="current-password"
+              placeholder="Contraseña"
+              [(ngModel)]="passwordSign"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
 
         <div class="acciones">
-          <!-- Mejor que <a href="#"> -->
-          <ion-button fill="clear" size="small" class="olvide" type="button">
-            ¿Olvidaste tu contraseña?
-          </ion-button>
+          <a href="#" class="olvide">¿Olvidaste tu contraseña?</a>
 
-          <ion-checkbox class="checkbox" labelPlacement="end">
-            Recordar contraseña
-          </ion-checkbox>
+          <div class="recordar">
+            <ion-checkbox class="checkbox"></ion-checkbox>
+            <label>Recordar contraseña</label>
+          </div>
         </div>
 
         <ion-button
@@ -80,61 +78,58 @@
 
       <!-- FORMULARIO REGISTRO -->
       <ng-container *ngIf="modoRegistro">
-        <ion-item class="input-item" lines="none">
-          <ion-icon name="person-outline" slot="start" aria-hidden="true"></ion-icon>
-          <ion-input
-            type="text"
-            autocomplete="given-name"
-            placeholder="Nombre"
-            aria-label="Nombre"
-            [(ngModel)]="nombre"
-          ></ion-input>
-        </ion-item>
+        <ion-list lines="none" class="lista-form">
+          <ion-item class="input-item">
+            <ion-icon name="person-outline" slot="start" aria-hidden="true"></ion-icon>
+            <ion-input
+              type="text"
+              autocomplete="given-name"
+              placeholder="Nombre"
+              [(ngModel)]="nombre"
+            ></ion-input>
+          </ion-item>
 
-        <ion-item class="input-item" lines="none">
-          <ion-icon name="person-outline" slot="start" aria-hidden="true"></ion-icon>
-          <ion-input
-            type="text"
-            autocomplete="family-name"
-            placeholder="Apellidos"
-            aria-label="Apellidos"
-            [(ngModel)]="apellidos"
-          ></ion-input>
-        </ion-item>
+          <ion-item class="input-item">
+            <ion-icon name="person-outline" slot="start" aria-hidden="true"></ion-icon>
+            <ion-input
+              type="text"
+              autocomplete="family-name"
+              placeholder="Apellidos"
+              [(ngModel)]="apellidos"
+            ></ion-input>
+          </ion-item>
 
-        <ion-item class="input-item" lines="none">
-          <ion-icon name="mail-outline" slot="start" aria-hidden="true"></ion-icon>
-          <ion-input
-            type="email"
-            inputmode="email"
-            autocomplete="email"
-            placeholder="Correo electrónico"
-            aria-label="Correo electrónico"
-            [(ngModel)]="correo"
-          ></ion-input>
-        </ion-item>
+          <ion-item class="input-item">
+            <ion-icon name="mail-outline" slot="start" aria-hidden="true"></ion-icon>
+            <ion-input
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              placeholder="Correo electrónico"
+              [(ngModel)]="correo"
+            ></ion-input>
+          </ion-item>
 
-        <ion-item class="input-item" lines="none">
-          <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
-          <ion-input
-            type="password"
-            autocomplete="new-password"
-            placeholder="Contraseña"
-            aria-label="Contraseña"
-            [(ngModel)]="password"
-          ></ion-input>
-        </ion-item>
+          <ion-item class="input-item">
+            <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
+            <ion-input
+              type="password"
+              autocomplete="new-password"
+              placeholder="Contraseña"
+              [(ngModel)]="password"
+            ></ion-input>
+          </ion-item>
 
-        <ion-item class="input-item" lines="none">
-          <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
-          <ion-input
-            type="password"
-            autocomplete="new-password"
-            placeholder="Repetir contraseña"
-            aria-label="Repetir contraseña"
-            [(ngModel)]="password2"
-          ></ion-input>
-        </ion-item>
+          <ion-item class="input-item">
+            <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
+            <ion-input
+              type="password"
+              autocomplete="new-password"
+              placeholder="Repetir contraseña"
+              [(ngModel)]="password2"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
 
         <ion-button
           type="button"
@@ -150,7 +145,6 @@
       <!-- Botón Google -->
       <div class="google-box">
         <p class="o">o</p>
-
         <ion-button type="button" expand="block" fill="clear" class="btn-google">
           <ion-icon name="logo-google" class="google-icon" slot="start" aria-hidden="true"></ion-icon>
           Continuar con Google
