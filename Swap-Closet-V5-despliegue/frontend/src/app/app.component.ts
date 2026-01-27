@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {MenuFooterComponent} from "./components/menu-footer/menu-footer.component";
-import {RouterOutlet} from "@angular/router";
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import {AuthService} from "./service/authService/auth.service";
+import {MenuFooterComponent} from "./components/menu-footer/menu-footer.component";
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonicModule, MenuFooterComponent, RouterOutlet],
+  imports: [IonApp, IonRouterOutlet],
   standalone: true
 })
 export class AppComponent {
