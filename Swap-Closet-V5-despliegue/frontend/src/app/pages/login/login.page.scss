@@ -143,8 +143,15 @@
 }
 
 .google-icon {
-  width: 18px;
-  height: 18px;
+  font-size: 18px;
   margin-right: 8px;
 }
 
+
+.acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
