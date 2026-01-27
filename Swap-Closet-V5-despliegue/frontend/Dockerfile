@@ -4,12 +4,12 @@ FROM node:22-alpine AS build
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 COPY . .
 
 # Forzamos build production (aunque tu script "build" esté en development)
-RUN npx ng build --configuration production
+RUN npx run build -- --configuration = production
 
 # ---------- RUNTIME ----------
 FROM nginx:1.27-alpine
