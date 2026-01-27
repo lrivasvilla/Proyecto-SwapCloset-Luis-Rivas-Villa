@@ -6,8 +6,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ionic serve --proxy-config proxy.conf.json",
-    "build": "ng build --configuration development",
-    "watch": "ng build --watch --configuration development",
+    "build": "ng build --configuration production",
+    "watch": "ng build --watch --configuration production",
     "test": "ng test",
     "lint": "ng lint"
   },
