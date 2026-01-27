@@ -1,5 +1,4 @@
 import {booleanAttribute, Component, inject, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {IonicModule, ToastController} from "@ionic/angular";
 import {Router, RouterLink} from "@angular/router";
@@ -12,7 +11,7 @@ import {AuthService} from "../../service/authService/auth.service";
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterLink]
+  imports: [IonicModule, FormsModule, RouterLink]
 })
 export class LoginPage implements OnInit {
 

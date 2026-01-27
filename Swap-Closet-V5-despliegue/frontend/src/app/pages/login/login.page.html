@@ -31,8 +31,9 @@
         </button>
       </div>
 
-      <!-- FORMULARIO LOGIN -->
-      <ng-container *ngIf="!modoRegistro">
+      <!-- FORMULARIO LOGIN / REGISTRO -->
+      @if (!modoRegistro) {
+        <!-- FORMULARIO LOGIN -->
         <ion-list lines="none" class="lista-form">
           <ion-item class="input-item">
             <ion-icon name="mail-outline" slot="start" aria-hidden="true"></ion-icon>
@@ -74,10 +75,8 @@
         >
           Iniciar Sesión
         </ion-button>
-      </ng-container>
-
-      <!-- FORMULARIO REGISTRO -->
-      <ng-container *ngIf="modoRegistro">
+      } @else {
+        <!-- FORMULARIO REGISTRO -->
         <ion-list lines="none" class="lista-form">
           <ion-item class="input-item">
             <ion-icon name="person-outline" slot="start" aria-hidden="true"></ion-icon>
@@ -140,7 +139,7 @@
         >
           Crear cuenta
         </ion-button>
-      </ng-container>
+      }
 
       <!-- Botón Google -->
       <div class="google-box">
