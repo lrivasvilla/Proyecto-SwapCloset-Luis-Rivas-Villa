@@ -1,16 +1,32 @@
-import {Component, inject, Input, input, OnChanges, OnInit, signal} from '@angular/core';
-import {IonicModule, ToastController} from "@ionic/angular";
-import {ProductoDTO} from "../../../modelos/ProductoDTO";
-import {RouterLink, RouterModule} from "@angular/router";
-import {UsuarioDTO} from "../../../modelos/UsuarioDTO";
-import {UsuarioService} from "../../../service/usuarioService/usuario.service";
-import {Observable} from "rxjs";
-import {AsyncPipe, DatePipe, NgClass, NgIf, TitleCasePipe} from "@angular/common";
-import {RaitingService} from "../../../service/raitingService/raiting.service";
-import {CartaProductoDTO} from "../../../modelos/CartaProductoDTO";
-import {AuthService} from "../../../service/authService/auth.service";
-import {FavoritosService} from "../../../service/favoritosService/favoritos.service";
-import {FavoritoDTO} from "../../../modelos/FavoritoDTO";
+import { Component, inject, input, signal } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import {
+  AsyncPipe,
+  DatePipe,
+  NgClass,
+  NgIf,
+  TitleCasePipe,
+} from '@angular/common';
+import { ToastController } from '@ionic/angular';
+import {
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonImg,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonFab,
+  IonFabButton,
+  IonIcon,
+  IonChip,
+} from '@ionic/angular/standalone';
+
+import { CartaProductoDTO } from '../../../modelos/CartaProductoDTO';
+import { AuthService } from '../../../service/authService/auth.service';
+import { FavoritosService } from '../../../service/favoritosService/favoritos.service';
+import { FavoritoDTO } from '../../../modelos/FavoritoDTO';
 
 @Component({
   selector: 'app-carta-home-intercambio',
@@ -18,14 +34,33 @@ import {FavoritoDTO} from "../../../modelos/FavoritoDTO";
   styleUrls: ['./carta-home-intercambio.component.scss'],
   standalone: true,
   imports: [
-    IonicModule, RouterModule, AsyncPipe, NgClass, NgIf, TitleCasePipe, DatePipe
-  ]
+    // Ionic standalone components usados en el HTML
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonImg,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonFab,
+    IonFabButton,
+    IonIcon,
+    IonChip,
+
+    // Angular
+    RouterModule,
+    NgIf,
+    NgClass,
+    AsyncPipe,
+    TitleCasePipe,
+    DatePipe,
+  ],
 })
 export class CartaHomeIntercambioComponent {
-
   producto = input.required<CartaProductoDTO>();
 
-  // --- Estado de Favoritos (Usamos signal para reactividad) ---
+  // --- Estado de Favoritos (signal para reactividad) ---
   isFavorite = signal<boolean>(false);
 
   // --- Servicios ---
@@ -46,22 +81,21 @@ export class CartaHomeIntercambioComponent {
    */
   checkInitialFavoriteState() {
     const userId = this.currentUserId;
-    const productId = this.producto()?.productoId; // Obtener el ID del producto desde el input signal
+    const productId = this.producto()?.productoId; // ID del producto desde el input signal
 
     if (productId && userId) {
-      // Llama al endpoint GET /api/favoritos/exists/{userId}/{productId}
+      // Endpoint GET /api/favoritos/exists/{userId}/{productId}
       this.favoritosService.isFavorito(userId, productId).subscribe({
         next: (isFav) => {
           this.isFavorite.set(isFav);
         },
         error: (err) => {
-          console.error("Error al chequear favoritos:", err);
+          console.error('Error al chequear favoritos:', err);
           this.isFavorite.set(false);
-        }
+        },
       });
     }
   }
-
 
   /**
    * Alterna el estado de favorito (POST para añadir, DELETE para quitar).
@@ -77,14 +111,12 @@ export class CartaHomeIntercambioComponent {
     }
 
     if (!productId) {
-      // Si el producto no tiene ID, no se puede hacer nada
-      return;
+      return; // Sin ID de producto, no se puede actuar
     }
 
     const isFav = this.isFavorite();
 
     if (isFav) {
-
       // QUITAR FAVORITO
       this.favoritosService.deleteFavorito(userId, productId).subscribe({
         next: () => {
@@ -93,10 +125,9 @@ export class CartaHomeIntercambioComponent {
         },
         error: () => {
           this.mostrarToast('Error al quitar de favoritos.', 'danger');
-        }
+        },
       });
     } else {
-
       // AÑADIR FAVORITO
       const favoritoDto: FavoritoDTO = { idUsuario: userId, idProducto: productId };
 
@@ -107,11 +138,11 @@ export class CartaHomeIntercambioComponent {
         },
         error: (error) => {
           let mensaje = 'Error al añadir a favoritos.';
-          if (error.status === 400 || error.status === 409) {
+          if (error?.status === 400 || error?.status === 409) {
             mensaje = 'El producto ya es tu favorito.';
           }
           this.mostrarToast(mensaje, 'danger');
-        }
+        },
       });
     }
   }
@@ -120,9 +151,10 @@ export class CartaHomeIntercambioComponent {
     const toast = await this.toastCtrl.create({
       message: mensaje,
       duration: 2000,
-      position: 'top'
+      position: 'top',
+      // Si quieres usar el color, descomenta esto:
+      // color
     });
     await toast.present();
   }
-
 }

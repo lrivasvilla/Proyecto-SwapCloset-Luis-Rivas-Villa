@@ -1,18 +1,25 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
-import {animate, style, transition, trigger} from "@angular/animations";
-import {CartaHomePrestamoComponent} from "../../components/c-home/carta-home-prestamo/carta-home-prestamo.component";
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterModule } from '@angular/router';
+import { animate, style, transition, trigger } from '@angular/animations';
+
 import {
-  CartaHomeIntercambioComponent
-} from "../../components/c-home/carta-home-intercambio/carta-home-intercambio.component";
-import {
-  DatosAdicionalesChipComponent
-} from "../../components/c-publicar/datos-adicionales-chip/datos-adicionales-chip.component";
-import {RouterLink, RouterModule} from "@angular/router";
-import {CommonModule} from "@angular/common";
-import {ProductoService} from "../../service/productoService/producto.service";
-import {ProductoDTO} from "../../modelos/ProductoDTO";
-import {CartaProductoDTO} from "../../modelos/CartaProductoDTO";
+  IonHeader,
+  IonToolbar,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonButton,
+  IonIcon,
+  IonChip,
+  IonContent
+} from '@ionic/angular/standalone';
+
+import { ProductoService } from '../../service/productoService/producto.service';
+import { CartaProductoDTO } from '../../modelos/CartaProductoDTO';
+
+import { CartaHomeIntercambioComponent } from '../../components/c-home/carta-home-intercambio/carta-home-intercambio.component';
+import { DatosAdicionalesChipComponent } from '../../components/c-publicar/datos-adicionales-chip/datos-adicionales-chip.component';
 
 @Component({
   selector: 'app-home',
@@ -20,12 +27,25 @@ import {CartaProductoDTO} from "../../modelos/CartaProductoDTO";
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   imports: [
-    IonicModule,
+    // Angular
     CommonModule,
-    CartaHomeIntercambioComponent,
-    DatosAdicionalesChipComponent,
     RouterModule,
-    RouterLink
+    RouterLink,
+
+    // Ionic standalone (exactos)
+    IonHeader,
+    IonToolbar,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonButton,
+    IonIcon,
+    IonChip,
+    IonContent,
+
+    // Components
+    CartaHomeIntercambioComponent,
+    DatosAdicionalesChipComponent
   ],
   animations: [
     trigger('slideInOut', [
@@ -39,9 +59,7 @@ import {CartaProductoDTO} from "../../modelos/CartaProductoDTO";
     ])
   ]
 })
-
 export class HomePage implements OnInit {
-
   mostrarMenu = false;
 
   private productoService = inject(ProductoService);
@@ -54,13 +72,12 @@ export class HomePage implements OnInit {
 
   cargarProductos() {
     this.productoService.getAllCartasProductosActivos().subscribe({
-      next: (prods) => {
-        // set de productos y prefetch de imagen principal por producto
-        this.productos.set(prods);
-      },
+      next: (prods) => this.productos.set(prods),
       error: (err) => console.error('Error:', err)
     });
   }
-  toggleMenu() { this.mostrarMenu = !this.mostrarMenu; }
 
+  toggleMenu() {
+    this.mostrarMenu = !this.mostrarMenu;
+  }
 }
