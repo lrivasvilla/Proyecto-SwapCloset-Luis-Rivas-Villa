@@ -1,20 +1,23 @@
-/* Fondo: en Ionic SOLO variables, no flex/height aquí */
-.fondo {
+:host {
+  display: block;
+}
+
+/* ion-content DEBE quedarse en bloque */
+ion-content.fondo {
   --background: linear-gradient(125deg, #b0d2ff 0%, #f45097 100%);
 }
 
-/* Centramos el contenido con un wrapper, no con ion-content */
+/* El centrado se hace en un wrapper interno */
 .contenedor-central {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: 24px 0;
+  align-items: center;
+  padding: 24px;
+  box-sizing: border-box;
 }
 
-/* Logo + subtítulo */
 .contenedor-logo {
   display: flex;
   flex-direction: column;
@@ -25,7 +28,6 @@
 .logo {
   width: 10rem;
   height: 10rem;
-  display: block;
 }
 
 .subtitulo {
@@ -35,12 +37,11 @@
   text-align: center;
 }
 
-/* Card */
 .card-login {
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 2px 8px rgba(131, 131, 131, 0.4);
-  width: 90%;
+  width: 100%;
   max-width: 400px;
   padding: 2rem 1.5rem;
   text-align: center;
@@ -52,7 +53,6 @@
   margin-bottom: 1rem;
 }
 
-/* Tabs */
 .tabs {
   display: flex;
   justify-content: center;
@@ -76,32 +76,17 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Inputs Ionic: fuerza tamaño/padding para que NO colapsen */
-.input-item {
+/* ion-item NO se toca con display */
+ion-item.input-item {
   --background: #f9f9f9;
-  --padding-start: 12px;
-  --inner-padding-end: 12px;
-  --min-height: 48px;
-
   border-radius: 10px;
   margin-bottom: 1rem;
-  font-size: 0.9rem;
 }
 
-ion-input {
-  --padding-top: 10px;
-  --padding-bottom: 10px;
-}
-
-/* Acciones */
 .acciones {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
-  flex-wrap: wrap;
-
-  text-align: left;
   font-size: 0.8rem;
   margin-bottom: 1.5rem;
   color: #444;
@@ -110,17 +95,8 @@ ion-input {
 .olvide {
   color: #f45097;
   text-decoration: none;
-  margin-right: auto;
-  padding: 0;
 }
 
-.checkbox {
-  margin-left: 5px;
-  margin-right: 6px;
-  --size: 18px;
-}
-
-/* Botones */
 .btn-iniciar {
   --background: linear-gradient(90deg, #f45097, #b0d2ff);
   --border-radius: 12px;
@@ -129,25 +105,15 @@ ion-input {
   color: white;
 }
 
-/* Google */
 .google-box {
   margin-top: 1.2rem;
 }
 
-.o {
-  font-size: 0.8rem;
-  color: #888;
-  margin-bottom: 0.8rem;
-}
-
 .btn-google {
   --border-color: #ccc;
-  --border-radius: 12px;
-
   color: #444;
-  font-weight: 500;
-  border: #717171 1px solid;
-  border-radius: 15px;
+  border: 1px solid #717171;
+  --border-radius: 12px;
 }
 
 .google-icon {
