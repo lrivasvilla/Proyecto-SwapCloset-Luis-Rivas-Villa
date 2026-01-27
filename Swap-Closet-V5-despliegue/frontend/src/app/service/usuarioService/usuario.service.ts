@@ -14,7 +14,7 @@ import {environment} from "../../../environments/environment";
 export class UsuarioService {
 
   private http = inject(HttpClient);
-  private readonly apiUrl = environment.apiUrl + '/api/usuarios';
+  private readonly apiUrl = environment.apiUrl + '/usuarios';
 
   getUsuario(id: number): Observable<UsuarioDTO> {
     return this.http.get<UsuarioDTO>(`${this.apiUrl}/${id}`)

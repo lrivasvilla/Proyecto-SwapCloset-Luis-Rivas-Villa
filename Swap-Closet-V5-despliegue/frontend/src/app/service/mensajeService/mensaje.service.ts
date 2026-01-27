@@ -9,7 +9,7 @@ import {environment} from "../../../environments/environment";
 })
 export class MensajeService {
   private http = inject(HttpClient);
-  private readonly apiUrl = environment.apiUrl + '/api/mensajes'; //
+  private readonly apiUrl = environment.apiUrl + '/mensajes'; //
 
   getMensaje(id: number): Observable<MensajeDTO> {
     return this.http.get<MensajeDTO>(`${this.apiUrl}/${id}`)

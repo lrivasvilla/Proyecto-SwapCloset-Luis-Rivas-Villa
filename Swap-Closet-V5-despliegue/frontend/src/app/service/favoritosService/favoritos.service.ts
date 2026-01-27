@@ -11,7 +11,7 @@ import {environment} from "../../../environments/environment";
 })
 export class FavoritosService {
   private http = inject(HttpClient);
-  private readonly apiUrl = environment.apiUrl + '/api/favoritos';
+  private readonly apiUrl = environment.apiUrl + '/favoritos';
 
   getFavorito(id: number): Observable<FavoritoDTO> {
     return this.http.get<FavoritoDTO>(`${this.apiUrl}/${id}`)

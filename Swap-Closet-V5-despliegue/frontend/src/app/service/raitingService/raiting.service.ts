@@ -10,7 +10,7 @@ import {environment} from "../../../environments/environment";
 })
 export class RaitingService {
   private http = inject(HttpClient);
-  private readonly apiUrl = environment.apiUrl + '/api/raitings'; // ✅ URL completa
+  private readonly apiUrl = environment.apiUrl + '/raitings';
 
   getRaiting(id: number): Observable<RaitingDTO> {
     return this.http.get<RaitingDTO>(`${this.apiUrl}/${id}`)

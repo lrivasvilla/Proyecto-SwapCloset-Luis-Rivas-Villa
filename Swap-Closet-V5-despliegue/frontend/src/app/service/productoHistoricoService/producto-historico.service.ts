@@ -10,7 +10,7 @@ import {environment} from "../../../environments/environment";
 })
 export class ProductoHistoricoService {
   private http = inject(HttpClient);
-  private readonly apiUrl = environment.apiUrl + '/api/productos-historico'; //
+  private readonly apiUrl = environment.apiUrl + '/productos-historico'; //
 
   getProductoHistorico(id: number): Observable<ProductoHistoricoDTO> {
     return this.http.get<ProductoHistoricoDTO>(`${this.apiUrl}/${id}`)

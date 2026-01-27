@@ -9,7 +9,7 @@ import {environment} from "../../../environments/environment";
 })
 export class ChatService {
   private http = inject(HttpClient);
-  private readonly apiUrl = environment.apiUrl + '/api/chats';
+  private readonly apiUrl = environment.apiUrl + '/chats';
 
   getChat(id: number): Observable<ChatDTO> {
     return this.http.get<ChatDTO>(`${this.apiUrl}/${id}`)

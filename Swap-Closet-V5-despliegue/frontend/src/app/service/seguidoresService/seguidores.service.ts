@@ -10,7 +10,7 @@ import {environment} from "../../../environments/environment";
 })
 export class SeguidoresService {
   private http = inject(HttpClient);
-  private readonly apiUrl = environment.apiUrl + '/api/seguidores';
+  private readonly apiUrl = environment.apiUrl + '/seguidores';
 
   getCountSeguidores(idUsuario: number) {
     return this.http.get<number>(`${this.apiUrl}/usuario/${idUsuario}/count`);

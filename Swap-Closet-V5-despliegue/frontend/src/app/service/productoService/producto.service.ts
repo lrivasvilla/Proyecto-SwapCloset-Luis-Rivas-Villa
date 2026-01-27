@@ -11,7 +11,7 @@ import {environment} from "../../../environments/environment";
 export class ProductoService {
 
   private http = inject(HttpClient);
-  private readonly apiUrl = environment.apiUrl + '/api/productos'; //
+  private readonly apiUrl = environment.apiUrl + '/productos'; //
 
   getProducto(id: number): Observable<ProductoDTO> {
     return this.http.get<ProductoDTO>(`${this.apiUrl}/${id}`)
