@@ -7,7 +7,7 @@ import {MenuFooterComponent} from "./components/menu-footer/menu-footer.componen
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet],
+  imports: [IonApp, IonRouterOutlet, MenuFooterComponent],
   standalone: true
 })
 export class AppComponent {
