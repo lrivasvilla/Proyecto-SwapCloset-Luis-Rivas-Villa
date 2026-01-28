@@ -5,7 +5,7 @@
         <ion-grid>
           <ion-row>
             <div class="imagen-container">
-              <ion-img [src]="primeraImagen || 'assets/icon/card-media.png'" alt="Imagen del producto" class="producto-imagen"></ion-img>
+              <img [src]="primeraImagen || 'assets/icon/card-media.png'" alt="Imagen del producto" class="producto-imagen"/>
 
               <ion-chip class="chip-camara" (click)="cambiarFoto()">
                 <ion-icon class="icono-camara" color="white" name="camera-outline"></ion-icon>
