@@ -2,11 +2,11 @@
   <ion-grid>
     <ion-row>
       <div class="imagen-container">
-        <ion-img
+        <img
           [src]="primeraImagen"
           alt="Imagen del producto"
           class="producto-imagen"
-        ></ion-img>
+        />
 
         <ion-chip
           [ngClass]="(producto?.tipo | lowercase ) === 'intercambio' ? 'chip-rosa' : 'chip-azul'"
@@ -119,7 +119,7 @@
 
           <ion-row class="usuario-card-top-row">
             <div size="3" class="usuario-card-avatar-col">
-              <ion-img [src]="usuario?.urlImg" class="usuario-card-avatar"></ion-img>
+              <img [src]="usuario?.urlImg" class="usuario-card-avatar"/>
             </div>
 
             <div class="usuario-card-info-col">
